@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Penguji aturan pembacaan teks notifikasi bank dan e-wallet. Salinan JavaScript dari IncomeParser.kt, diuji pada 36 contoh teks.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>Penguji Parser Uang Masuk</title>
+<style>
+:root{
+  --bg:#ffffff;--card:#ffffff;--ink:#3c3c3c;--mute:#6b6b6b;--line:#e5e5e5;--shade:#f7f7f7;
+  --ok:#2d6b00;--okbg:#eaffd5;--bad:#b81f1f;--badbg:#ffeaea;--btn:#58cc02;--btn-edge:#58a700;--btn-ink:#ffffff;--blue:#0b6fa3;
+}
+:root[data-theme="dark"],:root:not([data-theme="light"]){}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#131f24;--card:#1f2c33;--ink:#f1f7fb;--mute:#9db0ba;--line:#37464f;--shade:#18252b;--ok:#7ddc3a;--okbg:#1c3312;--bad:#ff8585;--badbg:#3a2326;--blue:#5fc8fa}
+}
+*{box-sizing:border-box}
+html{font-size:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5;font-size:0.9375rem;
+  padding:1rem max(1rem,env(safe-area-inset-right)) calc(2rem + env(safe-area-inset-bottom)) max(1rem,env(safe-area-inset-left));
+  padding-top:max(1rem,env(safe-area-inset-top));-webkit-text-size-adjust:100%;
+}
+main{max-width:46rem;margin:0 auto}
+h1{font-size:1.5rem;margin:0 0 .25rem}
+h2{font-size:1.0625rem;margin:0 0 .5rem}
+p{margin:0 0 .75rem}
+.sub{color:var(--mute);font-size:.875rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:.875rem;padding:1rem;margin:0 0 1rem}
+label{display:block;font-weight:700;font-size:.8125rem;color:var(--mute);margin-bottom:.25rem}
+textarea,input{
+  font:inherit;width:100%;color:var(--ink);background:var(--shade);
+  border:1px solid var(--line);border-radius:.625rem;padding:.625rem .75rem;min-height:2.75rem;
+}
+textarea{min-height:5.5rem;resize:vertical}
+textarea:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button{
+  font:inherit;font-weight:800;min-height:2.75rem;padding:.5rem 1.25rem;border-radius:.75rem;cursor:pointer;
+  background:var(--btn);color:var(--btn-ink);border:0;box-shadow:0 4px 0 var(--btn-edge);
+}
+button:active{transform:translateY(.25rem);box-shadow:0 0 0 var(--btn-edge)}
+.field+.field{margin-top:.75rem}
+.result{margin-top:.875rem;padding:.75rem;border-radius:.75rem;border:1px solid var(--line);background:var(--shade)}
+.result.ok{border-color:var(--ok);background:var(--okbg);color:var(--ok)}
+.result.bad{border-color:var(--bad);background:var(--badbg);color:var(--bad)}
+.result b{display:block;font-size:1.0625rem}
+.result span{display:block;font-size:.875rem;font-weight:600;overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse}
+caption{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+th,td{padding:.5rem .5rem;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;font-size:.8125rem}
+th{color:var(--mute);font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.03em}
+td.n{color:var(--mute);font-variant-numeric:tabular-nums;width:2.25rem}
+td.txt{overflow-wrap:anywhere}
+td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+tr.ok td.st{color:var(--ok);font-weight:800}
+tr.bad td.st{color:var(--bad);font-weight:800}
+.summary{font-weight:800;margin:0 0 .5rem}
+.summary.ok{color:var(--ok)}
+.summary.bad{color:var(--bad)}
+.note{font-size:.8125rem;color:var(--mute);margin:.5rem 0 0}
+@media (prefers-reduced-motion:reduce){button{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Penguji Parser Uang Masuk</h1>
+  <p class="sub">Salinan JavaScript dari <code>IncomeParser.kt</code>. Tempel teks notifikasi untuk melihat keputusan parser, atau lihat hasil 36 contoh teks di bawah. Tidak ada data yang dikirim ke mana pun.</p>
+
+  <section class="card">
+    <h2>Coba teks notifikasi</h2>
+    <div class="field">
+      <label for="text">Teks notifikasi</label>
+      <textarea id="text" maxlength="1000" autocomplete="off" spellcheck="false" placeholder="Anda menerima transfer Rp1.500.000 dari BUDI SANTOSO">Anda menerima transfer Rp1.500.000 dari BUDI SANTOSO</textarea>
+    </div>
+    <div class="field">
+      <label for="fb">Pengirim cadangan (nama aplikasi)</label>
+      <input id="fb" type="text" maxlength="60" autocomplete="off" value="BCA mobile">
+    </div>
+    <div class="field">
+      <button type="button" id="run">Baca teks</button>
+    </div>
+    <div class="result" id="result" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="card">
+    <h2>36 contoh teks</h2>
+    <p class="summary" id="summary" role="status"></p>
+    <div class="wrap">
+      <table>
+        <caption>Perbandingan hasil parser dengan harapan dari IncomeParserTest.kt</caption>
+        <thead>
+          <tr><th scope="col">#</th><th scope="col">Teks</th><th scope="col">Harapan</th><th scope="col">Hasil</th><th scope="col">Status</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="note">Kolom harapan diambil dari <code>IncomeParserTest.kt</code> dan aturan PRD bagian 5.2. Kasus yang ditolak parser konservatif memang disengaja: lebih baik terlewat daripada salah mencatat.</p>
+  </section>
+</main>
+
+<script>
+'use strict';
+
+/* Port JavaScript dari IncomeParser.kt. Aturannya harus tetap identik dengan versi Kotlin. */
+const IncomeParser = (function () {
+  // Termasuk non-breaking space (U+00A0, U+2007, U+202F): bank sering menaruhnya setelah "Rp".
+  const WHITESPACE = /[\s\u00A0\u2007\u202F]+/g;
+  const AMOUNT_SRC = '(?:rp\\.?|idr)\\s*([0-9][0-9.,]*)';
+  const SENDER = /\b(?:dari|from)\s+(.+?)(?=\s*[.,;]\s|\s*[.,;]$|\s*\(|\s+(?:ke|pada|melalui|via|sebesar|senilai|rekening|rek|dengan|tanggal|tgl|jam|pukul|saldo|diterima|berhasil|to|on)\b|$)/i;
+
+  const INCOME_HINTS = ['menerima', 'diterima', 'dana masuk', 'uang masuk', 'transfer masuk',
+    'saldo masuk', 'setoran', 'received', 'incoming'];
+  const REJECT_HINTS = ['mengirim', 'dikirim', 'transfer ke', 'pembayaran', 'membayar', 'debit',
+    'penarikan', 'tarik tunai', 'otp', 'kode verifikasi', 'tagihan',
+    'pembelian', 'belanja', 'top up', 'topup'];
+  const SKIP_AMOUNT_AFTER = ['saldo', 'biaya', 'admin', 'fee', 'sisa'];
+
+  /* "1.500.000", "1.500.000,00", "1,500,000.00", "50.000." -> rupiah utuh. */
+  function parseAmount(raw) {
+    const t = String(raw == null ? '' : raw).replace(/[.,]+$/, '');
+    if (!t) return null;
+    const dot = t.lastIndexOf('.');
+    const comma = t.lastIndexOf(',');
+    let intPart;
+    if (dot >= 0 && comma >= 0) {
+      intPart = t.slice(0, Math.max(dot, comma));
+    } else if (dot >= 0 || comma >= 0) {
+      const sep = dot >= 0 ? '.' : ',';
+      const pos = t.lastIndexOf(sep);
+      const after = t.length - pos - 1;
+      const seen = t.split(sep).length - 1;
+      intPart = (seen === 1 && after !== 3) ? t.slice(0, pos) : t;
+    } else {
+      intPart = t;
+    }
+    const digits = intPart.replace(/[^0-9]/g, '');
+    if (!digits || digits.length > 12) return null;
+    const n = Number(digits);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function parse(rawText, fallbackSender) {
+    const text = String(rawText == null ? '' : rawText).replace(WHITESPACE, ' ').trim();
+    const lower = text.toLowerCase();
+
+    for (const w of REJECT_HINTS) {
+      if (lower.includes(w)) return { ok: false, reason: 'reject', detail: w };
+    }
+    let hinted = false;
+    for (const w of INCOME_HINTS) {
+      if (lower.includes(w)) { hinted = true; break; }
+    }
+    if (!hinted) return { ok: false, reason: 'no-hint', detail: '' };
+
+    const re = new RegExp(AMOUNT_SRC, 'gi');
+    let amount = null;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      const before = text.slice(Math.max(0, m.index - 12), m.index).toLowerCase();
+      let skip = false;
+      for (const w of SKIP_AMOUNT_AFTER) {
+        if (before.includes(w)) { skip = true; break; }
+      }
+      if (skip) continue;
+      const parsed = parseAmount(m[1]);
+      if (parsed !== null) { amount = parsed; break; }
+    }
+    if (amount === null) return { ok: false, reason: 'no-amount', detail: '' };
+    if (amount <= 0) return { ok: false, reason: 'zero-amount', detail: '' };
+
+    const picked = SENDER.exec(text);
+    let sender = picked ? picked[1].trim() : '';
+    sender = sender.slice(0, 60);
+    if (!sender) sender = String(fallbackSender == null ? '' : fallbackSender).trim().slice(0, 60);
+    return { ok: true, sender: sender, amount: amount };
+  }
+
+  return { parse: parse, parseAmount: parseAmount };
+})();
+
+/* 36 contoh teks: harapan diambil dari IncomeParserTest.kt dan aturan PRD 5.2. */
+const CASES = [
+  { t: 'Anda menerima transfer Rp1.500.000 dari BUDI SANTOSO', want: { sender: 'BUDI SANTOSO', amount: 1500000 } },
+  { t: 'Dana masuk Rp 50.000 dari ANI. Saldo Rp 1.000.000', want: { sender: 'ANI', amount: 50000 } },
+  { t: 'Saldo Rp 1.000.000. Kamu menerima Rp200.000 dari Budi via GoPay', want: { sender: 'Budi', amount: 200000 } },
+  { t: 'Transfer masuk Rp 750.000 dari SITI RAHAYU ke rekening 1234', want: { sender: 'SITI RAHAYU', amount: 750000 } },
+  { t: 'Dana masuk Rp1.234.567,50 dari PT ABC (BCA)', want: { sender: 'PT ABC', amount: 1234567 } },
+  { t: 'You received Rp 500,000.00 from John', want: { sender: 'John', amount: 500000 } },
+  { t: 'Anda menerima Rp25.000', want: { sender: 'FALLBACK', amount: 25000 } },
+  { t: 'Dana masuk Rp50.000.', want: { sender: 'FALLBACK', amount: 50000 } },
+  { t: 'Dana masuk Rp\u00A01.500.000 dari ANI', want: { sender: 'ANI', amount: 1500000 } },
+  { t: 'Anda menerima transfer Rp\u202F750.000 dari BUDI', want: { sender: 'BUDI', amount: 750000 } },
+  { t: 'Rp 5.000 dari Anto diterima', want: { sender: 'Anto', amount: 5000 } },
+  { t: 'Uang masuk IDR 2.000.000 dari PT MAJU JAYA TBK', want: { sender: 'PT MAJU JAYA TBK', amount: 2000000 } },
+  { t: 'Setoran Rp 300.000 masuk dari BANK BCA', want: { sender: 'BANK BCA', amount: 300000 } },
+  { t: 'Saldo masuk dari DEWI senilai Rp 125.000', want: { sender: 'DEWI', amount: 125000 } },
+  { t: 'Incoming transfer Rp 1,500,000.00 from ACME CORP', want: { sender: 'ACME CORP', amount: 1500000 } },
+  { t: 'Dana masuk Rp 2.000.000,00 dari TOKO MAKMUR, terima kasih', want: { sender: 'TOKO MAKMUR', amount: 2000000 } },
+  { t: 'Anda menerima Rp 40.000 dari Hadi pada 12 Nov', want: { sender: 'Hadi', amount: 40000 } },
+  { t: 'Dana masuk Rp 90.000 dari Rina melalui BCA', want: { sender: 'Rina', amount: 90000 } },
+  { t: 'Dana masuk Rp 3.000.000 dari PT SUMBER REJEKI sebesar 3 juta', want: { sender: 'PT SUMBER REJEKI', amount: 3000000 } },
+  { t: 'Biaya admin Rp 6.500. Dana masuk Rp 250.000 dari AYU', want: { sender: 'AYU', amount: 250000 } },
+  { t: 'Sisa saldo Rp 10.000. Anda menerima Rp 500.000 dari BUDI', want: { sender: 'BUDI', amount: 500000 } },
+  { t: 'Dana masuk Rp 75.500 dari Ibu (transfer)', want: { sender: 'Ibu', amount: 75500 } },
+  { t: 'Anda menerima Rp 12.000 dari Tono, S.H.', want: { sender: 'Tono', amount: 12000 } },
+  { t: 'Dana masuk Rp 1.500.000 dari', want: { sender: 'FALLBACK', amount: 1500000 } },
+  { t: 'Transfer masuk Rp 1.000.000 dari CV SINAR JAYA ke rekening BCA 123', want: { sender: 'CV SINAR JAYA', amount: 1000000 } },
+  { t: 'Dana masuk Rp 2.500.000 dari ANDI WIJAYA jam 14:32', want: { sender: 'ANDI WIJAYA', amount: 2500000 } },
+  { t: 'Anda mengirim Rp100.000 ke ANI', want: null },
+  { t: 'Kode OTP Anda 123456. Dana masuk Rp100.000 dari ANI', want: null },
+  { t: 'Promo cashback Rp 10.000 menanti', want: null },
+  { t: 'Pembayaran Rp 85.000 ke Warung berhasil', want: null },
+  { t: 'Debit Rp 250.000 di INDOMARET', want: null },
+  { t: 'Penarikan tunai Rp 500.000 berhasil', want: null },
+  { t: 'Tagihan kartu kredit Rp 2.000.000 jatuh tempo', want: null },
+  { t: 'Top up GoPay Rp 100.000 berhasil', want: null },
+  { t: 'Saldo masuk Rp 2.500.000 dari ANDI', want: null },
+  { t: 'Dana masuk Rp 0 dari X', want: null }
+];
+
+(function () {
+  if (typeof document === 'undefined') return;
+
+  const $ = function (id) { return document.getElementById(id); };
+  const rupiah = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 });
+
+  function visible(s) {
+    return s.replace(/\u00A0/g, '[NBSP]').replace(/\u2007/g, '[NBSP]').replace(/\u202F/g, '[NBSP]');
+  }
+  function show(r) {
+    const box = $('result');
+    box.replaceChildren();
+    const head = document.createElement('b');
+    const line = document.createElement('span');
+    if (r.ok) {
+      box.className = 'result ok';
+      head.textContent = 'Diterima sebagai uang masuk';
+      line.textContent = rupiah.format(r.amount) + ' dari ' + r.sender;
+    } else {
+      box.className = 'result bad';
+      head.textContent = 'Ditolak';
+      line.textContent = r.reason === 'reject' ? 'Ada petunjuk pengeluaran: "' + r.detail + '".'
+        : r.reason === 'no-hint' ? 'Tidak ada petunjuk uang masuk.'
+        : r.reason === 'zero-amount' ? 'Nominal nol.'
+        : 'Tidak ada nominal rupiah yang bisa dipakai.';
+    }
+    box.append(head, line);
+  }
+
+  function same(a, b) {
+    if (a === null || b === null) return a === b;
+    return a.sender === b.sender && a.amount === b.amount;
+  }
+  function describe(want) {
+    return want ? rupiah.format(want.amount) + ' · ' + want.sender : 'Ditolak';
+  }
+  function describeGot(r) {
+    return r.ok ? rupiah.format(r.amount) + ' · ' + r.sender : 'Ditolak';
+  }
+
+  function runTests() {
+    const body = $('rows');
+    body.replaceChildren();
+    let pass = 0;
+    CASES.forEach(function (c, i) {
+      const got = IncomeParser.parse(c.t, 'FALLBACK');
+      const ok = same(got, c.want);
+      if (ok) pass += 1;
+      const tr = document.createElement('tr');
+      tr.className = ok ? 'ok' : 'bad';
+      const n = document.createElement('td'); n.className = 'n'; n.textContent = String(i + 1);
+      const t = document.createElement('td'); t.className = 'txt'; t.textContent = visible(c.t);
+      const w = document.createElement('td'); w.className = 'num'; w.textContent = describe(c.want);
+      const g = document.createElement('td'); g.className = 'num'; g.textContent = describeGot(got);
+      const s = document.createElement('td'); s.className = 'st'; s.textContent = ok ? 'Sama' : 'Beda';
+      tr.append(n, t, w, g, s);
+      body.append(tr);
+    });
+    const sum = $('summary');
+    sum.textContent = pass + ' dari ' + CASES.length + ' contoh sesuai aturan Kotlin.';
+    sum.className = 'summary ' + (pass === CASES.length ? 'ok' : 'bad');
+  }
+
+  $('run').addEventListener('click', function () {
+    show(IncomeParser.parse($('text').value, $('fb').value));
+  });
+  $('text').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $('run').click(); }
+  });
+
+  runTests();
+  show(IncomeParser.parse($('text').value, $('fb').value));
+})();
+</script>
+</body>
+</html>

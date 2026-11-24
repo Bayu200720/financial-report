@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Riwayat uang masuk yang terdeteksi otomatis dari notifikasi bank dan e-wallet. Data tersimpan di perangkat ini.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>Log Transaksi</title>
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#ffffff;--ink:#3c3c3c;--mute:#6b6b6b;--line:#e5e5e5;--head:#f2f2f2;
+  --inc:#2d6b00;--btn:#58cc02;--btn-edge:#58a700;--btn-ink:#ffffff;--danger:#b81f1f;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#131f24;--ink:#f1f7fb;--mute:#9db0ba;--line:#37464f;--head:#1b2b33;--inc:#7ddc3a;--danger:#ff8585}
+}
+*{box-sizing:border-box}
+html{font-size:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45;
+  padding:1rem max(1rem,env(safe-area-inset-right)) calc(1.5rem + env(safe-area-inset-bottom)) max(1rem,env(safe-area-inset-left));
+  padding-top:max(1rem,env(safe-area-inset-top));
+}
+main{max-width:46rem;margin:0 auto}
+h1{font-size:1.5rem;margin:0 0 .25rem}
+.summary{margin:0 0 1rem;color:var(--mute);font-size:.9375rem}
+.summary b{color:var(--inc)}
+.wrap{overflow-x:auto;border:1px solid var(--line);border-radius:.75rem}
+table{width:100%;border-collapse:collapse;min-width:18rem}
+caption{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+th,td{padding:.625rem .75rem;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{background:var(--head);font-size:.8125rem;text-transform:uppercase;letter-spacing:.03em;color:var(--mute)}
+td.time{white-space:nowrap;color:var(--mute);font-size:.875rem}
+td.who{overflow-wrap:anywhere}
+th.num,td.num{text-align:right;white-space:nowrap}
+td.num{font-weight:800;color:var(--inc);font-variant-numeric:tabular-nums}
+.empty{padding:2rem 1rem;text-align:center;color:var(--mute);border:1px dashed var(--line);border-radius:.75rem}
+.actions{margin-top:1rem;display:flex;justify-content:flex-end}
+button{
+  font:inherit;font-weight:800;min-height:2.75rem;padding:.5rem 1.25rem;border-radius:.875rem;cursor:pointer;
+  background:transparent;color:var(--mute);border:2px solid var(--line);
+}
+button:focus-visible{outline:3px solid var(--btn);outline-offset:2px}
+button.confirm{color:var(--danger);border-color:var(--danger)}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Riwayat Uang Masuk</h1>
+  <p class="summary" id="summary" role="status"></p>
+
+  <div class="wrap" id="wrap">
+    <table>
+      <caption>Daftar uang masuk, dari yang terbaru</caption>
+      <thead>
+        <tr>
+          <th scope="col">Waktu</th>
+          <th scope="col">Pengirim</th>
+          <th scope="col" class="num">Nominal</th>
+        </tr>
+      </thead>
+      <tbody id="transactionBody"></tbody>
+    </table>
+  </div>
+
+  <p class="empty" id="empty" hidden>Belum ada uang masuk. Transaksi akan muncul di sini otomatis saat notifikasi bank atau e-wallet terdeteksi.</p>
+
+  <div class="actions">
+    <button type="button" id="clear">Hapus riwayat</button>
+  </div>
+</main>
+
+<script>
+'use strict';
+
+const STORE_KEY = 'income_log_v1';
+const MAX_ROWS = 500;
+const rupiah = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 });
+const dateFmt = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+const monthFmt = new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' });
+
+let rows = load();
+
+function load() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+    return Array.isArray(parsed) ? parsed.filter(r => r && Number.isFinite(r.amount) && Number.isFinite(r.time)) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function save() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(rows)); } catch (e) { /* storage full or blocked: keep working in memory */ }
+}
+
+/**
+ * Called by the Android app: addTransaction(sender, amountInRupiah, timeInMillis).
+ * Still works with the old two-argument call; the time then defaults to now.
+ */
+function addTransaction(sender, amount, time) {
+  const value = typeof amount === 'number' ? amount : Number(String(amount).replace(/\D/g, ''));
+  if (!Number.isFinite(value) || value <= 0 || value >= 1e12) return;
+  const when = Number(time);
+  rows.push({
+    sender: String(sender == null ? '' : sender).trim().slice(0, 60) || 'Tidak diketahui',
+    amount: Math.round(value),
+    time: Number.isFinite(when) && when > 0 ? when : Date.now()
+  });
+  if (rows.length > MAX_ROWS) rows = rows.slice(-MAX_ROWS);
+  save();
+  render();
+}
+
+function cell(tag, className, text) {
+  const el = document.createElement(tag);
+  if (className) el.className = className;
+  el.textContent = text;          // textContent only: notification text can never inject HTML
+  return el;
+}
+
+function render() {
+  const body = document.getElementById('transactionBody');
+  const sorted = rows.slice().sort((a, b) => b.time - a.time);
+  body.replaceChildren(...sorted.map(r => {
+    const tr = document.createElement('tr');
+    const t = cell('td', 'time', '');
+    const stamp = document.createElement('time');
+    stamp.dateTime = new Date(r.time).toISOString();
+    stamp.textContent = dateFmt.format(r.time);
+    t.append(stamp);
+    tr.append(t, cell('td', 'who', r.sender), cell('td', 'num', '+' + rupiah.format(r.amount)));
+    return tr;
+  }));
+
+  const has = sorted.length > 0;
+  document.getElementById('wrap').hidden = !has;
+  document.getElementById('empty').hidden = has;
+  document.getElementById('clear').hidden = !has;
+
+  const now = new Date();
+  const thisMonth = sorted.filter(r => {
+    const d = new Date(r.time);
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  });
+  const total = thisMonth.reduce((sum, r) => sum + r.amount, 0);
+  const summary = document.getElementById('summary');
+  summary.replaceChildren();
+  if (has) {
+    const strong = document.createElement('b');
+    strong.textContent = rupiah.format(total);
+    summary.append(`${monthFmt.format(now)}: `, strong, ` dari ${thisMonth.length} transaksi`);
+  }
+}
+
+// Two-step delete. WebView ignores confirm() unless the app wires up a WebChromeClient, so we do not rely on it.
+const clearBtn = document.getElementById('clear');
+let clearTimer = 0;
+clearBtn.addEventListener('click', () => {
+  if (clearBtn.classList.contains('confirm')) {
+    clearTimeout(clearTimer);
+    rows = [];
+    save();
+    resetClear();
+    render();
+    return;
+  }
+  clearBtn.classList.add('confirm');
+  clearBtn.textContent = 'Ketuk lagi untuk menghapus semua';
+  clearTimer = setTimeout(resetClear, 4000);
+});
+function resetClear() {
+  clearBtn.classList.remove('confirm');
+  clearBtn.textContent = 'Hapus riwayat';
+}
+
+render();
+</script>
+</body>
+</html>

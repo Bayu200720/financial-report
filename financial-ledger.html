@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Personal financial report: record income, expenses, assets, liabilities and capital, then see cash flow, budget, profit and loss, and a balanced balance sheet. Data stays in your browser.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://tessdata.projectnaptha.com blob: data:; worker-src 'self' blob: https://cdn.jsdelivr.net; manifest-src data:; form-action 'none'; base-uri 'none'">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMiIgZmlsbD0iIzU4Y2MwMiIvPjxwYXRoIGQ9Ik0xMzIgMzMybDc4LTk2IDYyIDYyIDEwOC0xMzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI0NCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+" type="image/svg+xml">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMiIgZmlsbD0iIzU4Y2MwMiIvPjxwYXRoIGQ9Ik0xMzIgMzMybDc4LTk2IDYyIDYyIDEwOC0xMzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI0NCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiTXkgRmluYW5jaWFsIFJlcG9ydCIsInNob3J0X25hbWUiOiJGaW5hbmNlIiwiZGVzY3JpcHRpb24iOiJQZXJzb25hbCBjYXNoIGZsb3csIGJ1ZGdldCBhbmQgYmFsYW5jZSBzaGVldC4gRGF0YSBzdGF5cyBvbiB5b3VyIGRldmljZS4iLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2ZmZmZmZiIsInRoZW1lX2NvbG9yIjoiIzU4Y2MwMiIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSFpwWlhkQ2IzZzlJakFnTUNBMU1USWdOVEV5SWo0OGNtVmpkQ0IzYVdSMGFEMGlOVEV5SWlCb1pXbG5hSFE5SWpVeE1pSWdjbmc5SWpFeE1pSWdabWxzYkQwaUl6VTRZMk13TWlJdlBqeHdZWFJvSUdROUlrMHhNeklnTXpNeWJEYzRMVGsySURZeUlEWXlJREV3T0MweE16WWlJR1pwYkd3OUltNXZibVVpSUhOMGNtOXJaVDBpSTJabVppSWdjM1J5YjJ0bExYZHBaSFJvUFNJME5DSWdjM1J5YjJ0bExXeHBibVZqWVhBOUluSnZkVzVrSWlCemRISnZhMlV0YkdsdVpXcHZhVzQ5SW5KdmRXNWtJaTgrUEM5emRtYysiLCJzaXplcyI6ImFueSIsInR5cGUiOiJpbWFnZS9zdmcreG1sIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<title>My Financial Report</title>
+<style>
+:root{--bg:#eef1ea;--card:#fbfcf9;--ink:#16231a;--mute:#5d6b5f;--line:#dde3d6;--inc:#1f7a43;--exp:#b4541a;--acc:#1f4d34;--onacc:#fff;--warn:#b7791f;--r:0.875rem}
+:root[data-theme="dark"]{--bg:#0d140f;--card:#152019;--ink:#e6eee4;--mute:#8fa092;--line:#263529;--inc:#6fd08c;--exp:#ff9a62;--acc:#9ccf7a;--onacc:#0d140f;--warn:#e6b955;color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+.theme{position:absolute;top:0;right:0;width:2.75rem;height:2.75rem;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:1.25rem;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+*{box-sizing:border-box}
+html,body{margin:0}
+html{font-size:100%}
+body{background:var(--bg);color:var(--ink);font:0.9375rem/1.5 "Inter","SF Pro Text",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-feature-settings:"cv11","ss01";padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);-webkit-text-size-adjust:100%}
+.wrap{max-width:60rem;margin:0 auto;padding:1rem}
+header{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.875rem;margin:0.75rem 0 1.125rem}
+header .ctl{justify-content:center;text-align:left}
+h1{font-size:1.625rem;margin:0 0 0.25rem;padding:0 3.25rem;letter-spacing:-.02em;text-align:center}
+h2{font-size:1rem;margin:0 0 0.75rem}
+.sub{color:var(--mute);font-size:0.8125rem}
+.ctl{display:flex;gap:0.5rem;flex-wrap:wrap}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:1rem;margin-bottom:0.875rem}
+label{display:block;font-size:0.8125rem;color:var(--mute);margin-bottom:0.25rem}
+input,select,button{font:inherit;font-size:1rem;color:var(--ink)}
+input,select{width:100%;padding:0.625rem 0.75rem;border:1px solid var(--line);border-radius:10px;background:var(--bg);min-height:2.75rem}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.grid{display:grid;gap:0.75rem;grid-template-columns:1fr 1fr}
+.full{grid-column:1/-1}
+.seg{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
+.seg input{position:absolute;opacity:0;width:0;min-height:0}
+.seg label{margin:0;padding:0.6875rem;text-align:center;cursor:pointer;color:var(--ink);min-height:2.75rem}
+.seg input:checked+label{background:var(--acc);color:var(--onacc);font-weight:600}
+.seg input:focus-visible+label{outline:2px solid var(--acc);outline-offset:-4px}
+.btn{background:var(--acc);color:var(--onacc);border:0;border-radius:10px;padding:0.75rem 1rem;font-weight:600;cursor:pointer;min-height:2.75rem}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.kpis{display:grid;gap:0.75rem;grid-template-columns:repeat(3,1fr)}
+.kpi{border-left:4px solid var(--line);padding-left:0.75rem}
+.kpi.i{border-color:var(--inc)}.kpi.e{border-color:var(--exp)}.kpi.n{border-color:var(--acc)}
+.kpi b{display:block;font-size:1.25rem;font-variant-numeric:tabular-nums;letter-spacing:-.01em;word-break:break-word}
+.kpi span{font-size:0.8125rem;color:var(--mute)}
+.pos{color:var(--inc)}.neg{color:var(--exp)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+td,th{padding:0.5rem 0;border-bottom:1px solid var(--line);text-align:left}
+td:last-child,th:last-child,.r{text-align:right}
+th{font-size:0.8125rem;color:var(--mute);font-weight:500}
+tr.tot td{font-weight:700;border-bottom:2px solid var(--line)}
+.two{display:grid;gap:0.875rem;grid-template-columns:1fr 1fr}
+.tx{display:flex;gap:0.625rem;align-items:center;padding:0.625rem 0;border-bottom:1px solid var(--line)}
+.tx .m{flex:1;min-width:0}
+.tx .m div{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tx .amt{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.x{background:none;border:0;color:var(--mute);font-size:1.25rem;cursor:pointer;min-width:2.75rem;min-height:2.75rem}
+.empty{color:var(--mute);padding:0.5rem 0}
+svg{width:100%;height:auto;display:block}
+.bi{fill:var(--inc)}.be{fill:var(--exp)}.tl{fill:var(--mute);font-size:0.6875rem}.tv{fill:var(--ink);font-size:0.625rem}
+.legend{display:flex;gap:0.875rem;font-size:0.8125rem;color:var(--mute);margin-top:0.375rem}
+.legend i{display:inline-block;width:0.625rem;height:0.625rem;border-radius:2px;margin-right:0.3125rem}
+@media(max-width:640px){.kpis{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
+
+.bud{margin-top:0.875rem;padding-top:0.875rem;border-top:1px solid var(--line)}
+.bud-row{display:flex;gap:0.5rem;align-items:end;flex-wrap:wrap}
+.bud-row>div{flex:1;min-width:9.375rem}
+.bar{height:0.625rem;border-radius:99px;background:var(--line);overflow:hidden;margin:0.625rem 0 0.375rem}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--inc);width:0;transition:width .35s ease}
+.bar i.warn{background:var(--warn)}.bar i.over{background:var(--exp)}
+.bud-msg{font-size:0.8125rem;color:var(--mute)}
+@media(prefers-reduced-motion:reduce){.bar i{transition:none}}
+
+body{font-variant-numeric:tabular-nums lining-nums}
+.kpi b,.tx .amt,td:last-child,.bud-msg,#budget,#amount{font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum","lnum"}
+.tx .amt,td:last-child{text-align:right;min-width:9ch}
+.tx .amt{font-weight:600}
+.tv,.tl{font-variant-numeric:tabular-nums}
+#budget,#amount{text-align:right}
+
+.bud-head{display:flex;justify-content:space-between;align-items:center;gap:0.75rem}
+.bud-amt{font-size:1.375rem;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums lining-nums}
+.bud-edit{margin-top:0.75rem;padding:0.75rem;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.bud-edit[hidden]{display:none}
+.money{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:10px;background:var(--card);overflow:hidden}
+.money:focus-within{outline:2px solid var(--acc);outline-offset:2px}
+.money .sym{display:flex;align-items:center;padding:0 0.75rem;font-weight:600;color:var(--mute);background:var(--bg);border-right:1px solid var(--line);min-width:3rem;justify-content:center}
+.money input{border:0;border-radius:0;background:transparent;text-align:right;font-weight:600;font-size:1.125rem;outline:none;min-width:0}
+.bud-actions{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem}
+.bud-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-top:0.75rem}
+.bud-stats div{border-left:3px solid var(--line);padding-left:0.625rem;min-width:0}
+.bud-stats span{display:block;font-size:0.75rem;color:var(--mute)}
+.bud-stats b{font-size:0.875rem;font-variant-numeric:tabular-nums lining-nums;word-break:break-word}
+@media(max-width:640px){.bud-stats{grid-template-columns:1fr}}
+
+.tools{display:flex;gap:0.5rem;flex-wrap:wrap}
+.tools .btn{flex:1 1 8.75rem}
+.tools input[hidden]{display:none}
+.impmsg-ok{color:var(--inc)}.impmsg-bad{color:var(--exp)}
+
+.rec-head{display:flex;justify-content:space-between;align-items:center;gap:0.625rem;margin-bottom:0.75rem}
+.scan{margin:0 0 0.875rem;padding:0.75rem;border:1px dashed var(--line);border-radius:12px;background:var(--bg)}
+.scan[hidden],.scan details[hidden],.scan .sub[hidden]{display:none}
+.scan-top{display:flex;gap:0.75rem;align-items:center}
+.scan-top img{width:4.5rem;height:4.5rem;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.scan-info{flex:1;min-width:0}
+.scan pre{white-space:pre-wrap;word-break:break-word;font-size:0.75rem;max-height:11.25rem;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:0.5rem;margin:0.5rem 0 0}
+.scan .bar{margin:0.5rem 0 0}
+
+.scanmenu{display:flex;gap:0.5rem;flex-wrap:wrap;margin:-2px 0 0.75rem}
+.scanmenu[hidden]{display:none}
+.scanmenu .btn{flex:1 1 9.375rem}
+
+.seg5{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
+.seg5 input{position:absolute;opacity:0;width:0;min-height:0}
+.seg5 label{margin:0;padding:0.6875rem 2px;text-align:center;cursor:pointer;color:var(--ink);min-height:2.75rem;font-size:0.8125rem;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--line)}
+.seg5 label:first-of-type{border-left:0}
+.seg5 input:checked+label{background:var(--acc);color:var(--onacc);font-weight:600}
+.seg5 input:focus-visible+label{outline:2px solid var(--acc);outline-offset:-4px}
+@media(max-width:380px){.seg5{grid-template-columns:repeat(3,1fr)}.seg5 label:nth-of-type(n+4){border-top:1px solid var(--line)}.seg5 label:nth-of-type(4){border-left:0}}
+.bs-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.875rem}
+@media(max-width:640px){.bs-grid{grid-template-columns:1fr}}
+.bs-col h3{font-size:0.875rem;margin:0 0 0.375rem}
+.bs-chk{margin-top:0.75rem;padding:0.625rem 0.75rem;border-radius:10px;font-size:0.8125rem;border:1px solid var(--line);background:var(--bg)}
+.bs-chk.ok{border-color:var(--inc)}.bs-chk.diff{border-color:var(--warn)}
+.tag{display:inline-block;font-size:0.6875rem;padding:1px 0.4375rem;border-radius:99px;border:1px solid var(--line);color:var(--mute);margin-left:0.375rem;vertical-align:middle}
+
+/*DUO-SKIN-START*/
+:root{--bg:#ffffff;--card:#ffffff;--ink:#3c3c3c;--mute:#777777;--line:#e5e5e5;--inc:#58cc02;--incd:#58a700;--exp:#ff4b4b;--expd:#ea2b2b;--acc:#58cc02;--accd:#58a700;--onacc:#ffffff;--warn:#ffc800;--warnd:#e6b400;--blue:#1cb0f6;--blued:#1899d6;--shade:#f7f7f7;--r:1.25rem}
+:root[data-theme="dark"]{--bg:#131f24;--card:#1f2c33;--ink:#f1f7fb;--mute:#8fa3ad;--line:#37464f;--inc:#58cc02;--incd:#3f9400;--exp:#ff6b6b;--expd:#c93a3a;--acc:#58cc02;--accd:#3f9400;--onacc:#ffffff;--warn:#ffc800;--warnd:#b38c00;--blue:#49c0f8;--blued:#1a8fc4;--shade:#18252b}
+body{font-family:"Nunito","Feather Bold","DIN Round Pro","SF Pro Rounded",ui-rounded,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-weight:700;font-feature-settings:normal;background:var(--bg)}
+.wrap{max-width:47.5rem;padding:1.125rem 1rem 2.5rem}
+h1{font-size:1.875rem;font-weight:900;letter-spacing:-.01em;color:var(--inc)}
+h2{font-size:1.125rem;font-weight:800;color:var(--ink)}
+.sub{font-weight:600;color:var(--mute)}
+label{font-weight:800;color:var(--mute);font-size:0.8125rem}
+.card{border:2px solid var(--line);border-bottom-width:4px;border-radius:var(--r);padding:1.125rem;background:var(--card)}
+input,select{border:2px solid var(--line);border-radius:14px;background:var(--shade);font-weight:700;min-height:3rem;color:var(--ink)}
+input:focus,select:focus{border-color:var(--blue);outline:none;background:var(--card)}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+input::placeholder{color:var(--mute);font-weight:600;opacity:.8}
+
+/* chunky 3D buttons */
+.btn{background:var(--acc);color:var(--onacc);border:0;border-radius:16px;padding:0.75rem 1.125rem;min-height:3rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;font-size:0.875rem;box-shadow:0 4px 0 var(--accd);transform:translateY(0);transition:transform .08s ease,box-shadow .08s ease;-webkit-tap-highlight-color:transparent}
+.btn:hover{filter:brightness(1.04)}
+.btn:active{transform:translateY(0.25rem);box-shadow:0 0 0 var(--accd)}
+.btn.ghost{background:var(--card);color:var(--blue);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.btn.ghost:active{box-shadow:0 0 0 var(--line);transform:translateY(0.25rem)}
+#add{width:100%;font-size:1rem;min-height:3.375rem}
+#budsave{background:var(--acc)}
+#budclear{color:var(--exp)}
+
+/* round theme button */
+.theme{width:3rem;height:3rem;border:2px solid var(--line);border-radius:50%;background:var(--card);box-shadow:0 4px 0 var(--line);transition:transform .08s ease,box-shadow .08s ease}
+.theme:active{transform:translateY(0.25rem);box-shadow:0 0 0 var(--line)}
+
+/* type selector as chunky pills */
+.seg,.seg5{border:0;background:transparent;overflow:visible;gap:0.5rem}
+.seg{grid-template-columns:1fr 1fr}
+.seg label,.seg5 label{border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;background:var(--card);color:var(--ink);font-weight:800;padding:0.625rem 0.25rem;min-height:3rem;transition:transform .08s ease}
+.seg5 label,.seg5 label:first-of-type{border-left:2px solid var(--line)}
+.seg input:checked+label,.seg5 input:checked+label{background:#ddf4ff;border-color:var(--blue);color:var(--blue)}
+:root[data-theme="dark"] .seg input:checked+label,:root[data-theme="dark"] .seg5 input:checked+label{background:#1a3a4a}
+.seg5 input#t-exp:checked+label{background:#ffdfe0;border-color:var(--exp);color:var(--exp)}
+.seg5 input#t-inc:checked+label{background:#d7ffb8;border-color:var(--inc);color:var(--incd)}
+:root[data-theme="dark"] .seg5 input#t-exp:checked+label{background:#3a2326}
+:root[data-theme="dark"] .seg5 input#t-inc:checked+label{background:#1f3a14;color:var(--inc)}
+.seg label:active,.seg5 label:active{transform:translateY(2px)}
+@media(max-width:380px){.seg5 label:nth-of-type(n+4){border-top:2px solid var(--line)}}
+
+/* summary tiles */
+.kpis{gap:0.625rem}
+.kpi{border:2px solid var(--line);border-bottom-width:4px;border-left-width:2px;border-radius:16px;padding:0.75rem 0.875rem;background:var(--shade)}
+.kpi.i{border-color:var(--inc);background:#eaffd5}.kpi.e{border-color:var(--exp);background:#ffeaea}.kpi.n{border-color:var(--blue);background:#e3f6ff}
+:root[data-theme="dark"] .kpi.i{background:#1c3312}:root[data-theme="dark"] .kpi.e{background:#3a2326}:root[data-theme="dark"] .kpi.n{background:#17323f}
+.kpi span{font-weight:800}
+.kpi b{font-size:1.3125rem;font-weight:900}
+.kpi.i b{color:var(--incd)}.kpi.e b{color:var(--expd)}
+:root[data-theme="dark"] .kpi.i b{color:var(--inc)}:root[data-theme="dark"] .kpi.e b{color:var(--exp)}
+.pos{color:var(--incd)}.neg{color:var(--expd)}
+:root[data-theme="dark"] .pos{color:var(--inc)}:root[data-theme="dark"] .neg{color:var(--exp)}
+
+/* progress bar like a lesson bar */
+.bar{height:1.125rem;border-radius:99px;background:var(--line);margin:0.75rem 0 0.5rem;position:relative}
+.bar i{border-radius:99px;background:var(--inc);position:relative;min-width:0}
+.bar i::after{content:"";position:absolute;left:0.5rem;right:0.5rem;top:0.25rem;height:0.25rem;border-radius:99px;background:rgba(255,255,255,.35)}
+.bar i.warn{background:var(--warn)}.bar i.over{background:var(--exp)}
+.bud{border-top:2px solid var(--line)}
+.bud-amt{font-weight:900;font-size:1.5rem}
+.bud-edit{border:2px solid var(--line);border-radius:16px;background:var(--shade)}
+.money{border:2px solid var(--line);border-radius:14px;background:var(--card)}
+.money:focus-within{outline:none;border-color:var(--blue)}
+.money .sym{background:var(--shade);border-right:2px solid var(--line);font-weight:900}
+.bud-stats div{border-left:4px solid var(--line);border-radius:2px}
+.bud-stats b{font-weight:900}
+
+/* tables, lists, chart */
+td,th{border-bottom:2px solid var(--line)}
+tr.tot td{font-weight:900;border-bottom:2px solid var(--line)}
+th{font-weight:800}
+.tx{border-bottom:2px solid var(--line);padding:0.75rem 0}
+.tx .amt{font-weight:900}
+.x{border-radius:50%;font-weight:900}
+.x:hover{background:var(--shade);color:var(--exp)}
+.tag{border:2px solid var(--blue);color:var(--blue);font-weight:800;border-radius:99px;font-size:0.6875rem;padding:0 0.5rem}
+.bi{fill:var(--inc)}.be{fill:var(--exp)}.tl{font-weight:800}.tv{font-weight:800}
+.legend{font-weight:800}.legend i{border-radius:50%;width:0.75rem;height:0.75rem}
+.bs-chk{border:2px solid var(--line);border-radius:14px;font-weight:700}
+.bs-chk.ok{border-color:var(--inc);background:#eaffd5;color:var(--incd)}
+.bs-chk.diff{border-color:var(--warn);background:#fff8d6;color:#8a6d00}
+:root[data-theme="dark"] .bs-chk.ok{background:#1c3312;color:var(--inc)}
+:root[data-theme="dark"] .bs-chk.diff{background:#3a3210;color:var(--warn)}
+.scan{border:2px dashed var(--blue);border-radius:16px;background:var(--shade)}
+.scan-top img{border:2px solid var(--line);border-radius:12px}
+.scan pre{border:2px solid var(--line);border-radius:12px}
+.impmsg-ok{color:var(--incd)}.impmsg-bad{color:var(--expd)}
+.empty{font-weight:700}
+@media(prefers-reduced-motion:reduce){.btn,.theme,.seg label,.seg5 label{transition:none}}
+/*DUO-SKIN-END*/
+
+/*DUO-CONTRAST-START*/
+:root{--mute:#6b6b6b;--onacc:#0f3d00;--t-inc:#2d6b00;--t-exp:#b81f1f;--t-blue:#0b6fa3;--t-warn:#7a5d00}
+:root[data-theme="dark"]{--mute:#9bb0ba;--onacc:#0b2a00;--t-inc:#7ddc3a;--t-exp:#ff8585;--t-blue:#5fc8fa;--t-warn:#ffd84d}
+.btn{color:var(--onacc)}
+.btn.ghost{color:var(--t-blue)}
+#budclear{color:var(--t-exp)}
+.kpi.i b,.pos,.impmsg-ok{color:var(--t-inc)}
+.kpi.e b,.neg,.impmsg-bad{color:var(--t-exp)}
+:root[data-theme="dark"] .kpi.i b,:root[data-theme="dark"] .pos{color:var(--t-inc)}
+:root[data-theme="dark"] .kpi.e b,:root[data-theme="dark"] .neg{color:var(--t-exp)}
+.seg input:checked+label,.seg5 input:checked+label{color:var(--t-blue)}
+.seg5 input#t-exp:checked+label{color:var(--t-exp)}
+.seg5 input#t-inc:checked+label{color:var(--t-inc)}
+:root[data-theme="dark"] .seg input:checked+label,:root[data-theme="dark"] .seg5 input:checked+label{color:var(--t-blue)}
+:root[data-theme="dark"] .seg5 input#t-exp:checked+label{color:var(--t-exp)}
+:root[data-theme="dark"] .seg5 input#t-inc:checked+label{color:var(--t-inc)}
+.bs-chk.ok{color:var(--t-inc)}
+.bs-chk.diff{color:var(--t-warn)}
+:root[data-theme="dark"] .bs-chk.ok{color:var(--t-inc)}
+:root[data-theme="dark"] .bs-chk.diff{color:var(--t-warn)}
+.tag{color:var(--t-blue)}
+h1{color:var(--t-inc)}
+:root[data-theme="dark"] h1{color:#58cc02}
+.sub{color:var(--mute)}
+/*DUO-CONTRAST-END*/
+
+/*BAL-START*/
+.balbox{width:100%;max-width:47.5rem;text-align:left;background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:var(--r);padding:1rem}
+.bal-head{display:flex;justify-content:space-between;align-items:center;gap:0.75rem;flex-wrap:wrap}
+.bal-total{font-size:1.625rem;font-weight:900;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.01em;word-break:break-word}
+.bal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.625rem;margin-top:0.75rem}
+.bal-tile{border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:0.625rem 0.75rem;background:var(--shade);min-width:0}
+.bal-tile span{display:block;font-size:0.75rem;font-weight:800;color:var(--mute)}
+.bal-tile b{display:block;font-size:0.9375rem;font-weight:900;font-variant-numeric:tabular-nums lining-nums;word-break:break-word;margin-top:2px}
+.bal-tile.bank{border-color:var(--blue)}.bal-tile.cash{border-color:var(--inc)}.bal-tile.card{border-color:var(--warn)}.bal-tile.ewallet{border-color:var(--exp)}
+.bal-edit{margin-top:0.75rem;padding:0.75rem;border:2px solid var(--line);border-radius:16px;background:var(--shade)}
+.bal-edit[hidden]{display:none}
+.bal-fields{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+@media(max-width:640px){.bal-grid{grid-template-columns:1fr 1fr}.bal-fields{grid-template-columns:1fr}}
+/*BAL-END*/
+
+/*MV-START*/
+.full[hidden]{display:none}
+.mvwrap{margin-top:1rem;padding-top:0.875rem;border-top:2px solid var(--line)}
+.mvhead{font-size:0.9375rem;font-weight:900}
+.mvgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.625rem}
+.mv{border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:0.625rem 0.75rem;background:var(--shade);min-width:0}
+.mv.asset{border-color:var(--blue)}.mv.liability{border-color:var(--warn)}.mv.capital{border-color:var(--inc)}
+.mv span.l{display:block;font-size:0.75rem;font-weight:800;color:var(--mute)}
+.mv b{display:block;font-size:1.1875rem;font-weight:900;font-variant-numeric:tabular-nums lining-nums;word-break:break-word;margin:2px 0 0.375rem}
+.mv .d{display:flex;justify-content:space-between;gap:0.5rem;font-size:0.75rem;font-weight:700;color:var(--mute);font-variant-numeric:tabular-nums lining-nums}
+.mv .d em{font-style:normal;color:var(--ink)}
+.mv .cl{margin-top:0.375rem;padding-top:0.375rem;border-top:2px solid var(--line);font-size:0.75rem;font-weight:800;display:flex;justify-content:space-between;gap:0.5rem;font-variant-numeric:tabular-nums lining-nums}
+@media(max-width:640px){.mvgrid{grid-template-columns:1fr}}
+/*MV-END*/
+
+/*CAR-START*/
+.two{align-items:start}
+.bal-head{align-items:center}
+.car{display:flex;gap:0.75rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding:0.25rem 2px 0.625rem;margin-top:0.375rem;scrollbar-width:none;position:relative}
+.car::-webkit-scrollbar{display:none}
+.car:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:16px}
+.bcard{flex:0 0 78%;max-width:20rem;scroll-snap-align:start;border:2px solid var(--line);border-bottom-width:5px;border-radius:20px;padding:0.875rem 1rem;background:var(--card);min-width:0}
+.bcard .bhead{display:flex;align-items:center;gap:0.625rem}
+.bcard .ico{width:2.5rem;height:2.5rem;border-radius:50%;display:grid;place-items:center;font-size:1.25rem;background:var(--shade);flex:none}
+.bcard .bl{font-weight:900;font-size:0.875rem;color:var(--mute)}
+.bcard .bv{display:block;font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums lining-nums;margin:0.75rem 0 0.25rem;word-break:break-word}
+.bcard .bs2{font-size:0.75rem;font-weight:800;color:var(--mute)}
+.bcard.total{background:var(--acc);border-color:var(--accd);color:var(--onacc)}
+.bcard.total .ico{background:rgba(255,255,255,.4)}
+.bcard.total .bl,.bcard.total .bs2{color:var(--onacc)}
+.bcard.bank{border-color:var(--blue)}.bcard.cash{border-color:var(--inc)}.bcard.card{border-color:var(--warn)}.bcard.ewallet{border-color:var(--exp)}
+.dots{display:flex;justify-content:center;gap:2px}
+.dot{width:1.5rem;height:1.5rem;background:none;border:0;padding:0;display:grid;place-items:center;cursor:pointer}
+.dot::before{content:"";width:0.625rem;height:0.625rem;border-radius:99px;background:var(--line);transition:width .15s ease,background .15s ease}
+.dot[aria-current="true"]::before{width:1.375rem;background:var(--acc)}
+.dot:focus-visible{outline:3px solid var(--blue);border-radius:8px}
+.car-nav{display:flex;gap:0.5rem;align-items:center}
+.cbtn{width:2.75rem;height:2.75rem;border-radius:50%;border:2px solid var(--line);border-bottom-width:4px;background:var(--card);font-size:1.375rem;font-weight:900;color:var(--ink);cursor:pointer;line-height:1;padding:0}
+.cbtn:active{transform:translateY(2px)}
+.ind td{font-size:0.875rem}.ind td:first-child{padding-left:1rem;color:var(--mute)}
+@media(min-width:641px){.bcard{flex:0 0 calc((100% - 1.5rem)/3);max-width:none}}
+@media(max-width:640px){.cbtn{display:none}}
+@media(prefers-reduced-motion:reduce){.dot::before{transition:none}}
+/*CAR-END*/
+
+/*LINK-START*/
+.lbox{border:2px dashed var(--line);border-radius:16px;padding:0.75rem;background:var(--shade)}
+.chk{display:flex;align-items:center;gap:0.625rem;font-weight:800;color:var(--ink);font-size:0.875rem;margin:0;cursor:pointer}
+.chk input{width:1.375rem;height:1.375rem;min-height:0;padding:0;accent-color:var(--acc);flex:none}
+.lrow{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem}
+.lrow input{grid-column:1/-1}
+.lrow .x{grid-column:1/-1;justify-self:end;min-height:2.25rem}
+#linkbody[hidden]{display:none}
+.bcard{color:#10222e}
+.bcard .bl,.bcard .bs2,.bcard.total .bl,.bcard.total .bs2{color:#10222e}
+.bcard .ico{background:rgba(255,255,255,.5)}
+.bcard.total{background:#58cc02;border-color:#58a700}
+.bcard.bank{background:#1cb0f6;border-color:#1899d6}
+.bcard.cash{background:#ffc800;border-color:#e6b400}
+.bcard.card{background:#ce82ff;border-color:#a95ee6}
+.bcard.ewallet{background:#ff9600;border-color:#e08400}
+/*LINK-END*/
+
+/*NAV-START*/
+.wrap{padding-bottom:6rem}
+.page[hidden]{display:none}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;justify-content:center;gap:0.625rem;padding:0.5rem 0.75rem calc(0.5rem + env(safe-area-inset-bottom));background:var(--card);border-top:2px solid var(--line)}
+.tab{flex:1;max-width:16.25rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:3.5rem;border:2px solid transparent;border-radius:16px;background:transparent;color:var(--mute);font-weight:800;cursor:pointer;padding:0.25rem 0.5rem}
+.tab .ti{font-size:1.375rem;line-height:1}
+.tab .tl2{font-size:0.75rem;font-weight:800}
+.tab[aria-selected="true"]{background:#ddf4ff;border-color:var(--blue);color:var(--t-blue)}
+:root[data-theme="dark"] .tab[aria-selected="true"]{background:#1a3a4a}
+.tab:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.tab:active{transform:translateY(2px)}
+@media(min-width:900px){.tabbar{top:0;bottom:auto;border-top:0;border-bottom:2px solid var(--line);padding:0.5rem 0.75rem}.wrap{padding-top:4.5rem;padding-bottom:2.5rem}}
+/*NAV-END*/
+
+/*ACC-START*/
+.acc-list{display:flex;flex-direction:column;gap:0.625rem}
+.acc-row{display:grid;grid-template-columns:auto 1fr 1fr auto;gap:0.5rem;align-items:center}
+.acc-row .ico{width:2.5rem;height:2.5rem;border-radius:50%;display:grid;place-items:center;font-size:1.25rem;background:var(--card);border:2px solid var(--line)}
+.acc-row input{min-width:0}
+.acc-row .money input{font-size:1rem}
+.acc-row .rm{width:2.75rem;height:2.75rem;border-radius:50%;border:2px solid var(--line);background:var(--card);color:var(--t-exp);font-weight:900;font-size:1.125rem;cursor:pointer;padding:0}
+.acc-row .rm:hover{border-color:var(--exp)}
+.acc-add{display:flex;gap:0.5rem;align-items:center;margin-top:0.75rem;flex-wrap:wrap}
+.acc-add select{width:auto;min-width:8.125rem;flex:1}
+.acc-empty{padding:0.625rem;font-weight:700;color:var(--mute)}
+@media(max-width:640px){.acc-row{grid-template-columns:auto 1fr auto}.acc-row .money{grid-column:1/-1;order:5}}
+/*ACC-END*/
+
+/*F3-START*/
+.catadd{margin-top:0.375rem}.catadd .btn{min-height:2.375rem;padding:0.375rem 0.75rem;font-size:0.75rem;width:100%}
+.catnew{display:flex;gap:0.375rem;margin-top:0.375rem;flex-wrap:wrap}.catnew[hidden]{display:none}
+.catnew input{flex:1 1 8.75rem}.catnew .btn{min-height:2.75rem;padding:0.5rem 0.75rem}
+.lhead{font-weight:900;font-size:0.875rem;display:flex;align-items:center;gap:0.5rem}
+#amount{font-weight:800;font-size:1.125rem}
+.lrow select{min-width:0}
+/*F3-END*/
+/*FIX-START*/.acc-fixed{display:flex;flex-direction:column;min-width:0}.acc-fixed b{font-weight:900}/*FIX-END*/
+
+/*LANG-START*/
+.topbar{align-self:stretch;display:flex;justify-content:flex-end;align-items:center;gap:0.5rem}
+.topbar .theme{position:static;top:auto;right:auto}
+h1{padding:0}
+.langwrap{position:relative}
+.flag{width:1.75rem;height:1.1875rem;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.22);flex:none;display:block}
+.theme.lang .flag{width:1.625rem;height:1.125rem}
+.langmenu{position:absolute;right:0;top:calc(100% + 0.5rem);min-width:14.375rem;background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:0.375rem;z-index:60}
+.langmenu[hidden]{display:none}
+.lopt{display:flex;align-items:center;gap:0.75rem;width:100%;min-height:3rem;padding:0.5rem 0.75rem;border:0;background:transparent;border-radius:12px;color:var(--ink);font-weight:800;font-size:0.9375rem;cursor:pointer;text-align:left}
+.lopt:hover{background:var(--shade)}
+.lopt[aria-selected="true"]{background:var(--shade);color:var(--t-blue)}
+.lopt[aria-selected="true"]::after{content:"\2713";margin-left:auto;font-weight:900}
+.lopt:focus-visible{outline:3px solid var(--blue);outline-offset:-3px}
+/*LANG-END*/
+
+.u-mb10{margin-bottom:0.625rem}.u-mt8{margin-top:0.5rem}.u-mt6{margin-top:0.375rem}.u-mt14{margin-top:0.875rem}.u-m0{margin:0}.u-m688{margin:0.375rem 0 0.5rem}.u-m2100{margin:2px 0 0.625rem}.u-m0014{margin:0 0 0.875rem}.u-mneg{margin:-6px 0 0.625rem}.u-m004{margin:0 0 0.25rem}.u-m804{margin:0.5rem 0 0.25rem}.u-amt{min-height:1.125rem;margin-top:2px}.u-span{grid-column:1/-1}.u-binc{background:var(--inc)}.u-bexp{background:var(--exp)}
+.foot{max-width:60rem;margin:1.5rem auto 6rem;padding:0 1rem;text-align:center;color:var(--mute);font-size:.8125rem}.foot p{margin:0}
+.pct{font-weight:800;font-size:0.8125rem}.pct-i{color:var(--t-inc)}.pct-e{color:var(--t-exp)}
+.nfc-actions{display:flex;gap:0.625rem;flex-wrap:wrap;margin:0.75rem 0 0}#nfcrows td:first-child{color:var(--mute);white-space:nowrap;width:1%}#nfcrows td:last-child{overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+</style>
+<script>try{var t=localStorage.getItem('fin_ledger_theme_v1');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');else document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="topbar">
+    <div class="langwrap" id="langwrap">
+      <button class="theme lang" id="lang" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language"></button>
+      <div class="langmenu" id="langmenu" role="listbox" aria-label="Language" hidden></div>
+    </div>
+    <button class="theme" id="theme" type="button" aria-label="Switch between light and dark mode"></button>
+  </div>
+  <div><h1>My Financial Report</h1><div class="sub">Personal cash flow reporting. Data stays in this browser.</div></div>
+  
+  <div class="ctl">
+    <div><label for="pmode">Period type</label><select id="pmode"><option value="month">Month</option><option value="year">Year</option></select></div>
+    <div id="mwrap"><label for="month">Reporting period</label><input type="month" id="month"></div>
+    <div id="ywrap" hidden><label for="year">Reporting year</label><select id="year"></select></div>
+    <div><label for="cur">Currency</label><select id="cur"><option>IDR</option><option>USD</option><option>EUR</option><option>GBP</option><option>SGD</option><option>JPY</option><option>AUD</option></select></div>
+  </div>
+</header>
+
+<main>
+<div class="page" id="page-home" role="tabpanel" aria-labelledby="tab-home">
+<section class="balbox" aria-label="Account balances">
+    <div class="bal-head">
+      <div class="mvhead">Total balance</div>
+      <div class="car-nav">
+        <button class="cbtn" id="balprev" type="button" aria-label="Previous card">&#8249;</button>
+        <button class="cbtn" id="balnext" type="button" aria-label="Next card">&#8250;</button>
+        <button class="btn ghost" id="balbtn" type="button">Manage cards</button>
+      </div>
+    </div>
+    <div class="car" id="balgrid" role="group" aria-roledescription="carousel" aria-label="Balance cards. Swipe or use the arrow keys to see more." tabindex="0"></div>
+    <div class="dots" id="baldots"></div>
+    <div class="bal-edit" id="baledit" hidden>
+      <div class="sub u-mb10">Cash is one fixed account. Add as many Banks, E-wallets or Cards as you need, each with its own name, for example BCA, Mandiri, GoPay or OVO. The amount shown is the current balance. When a transaction picks one of these accounts in its Balance sheet effect, that card goes up or down. Transactions never create new accounts.</div>
+      <div class="acc-list" id="acclist"></div>
+      <div class="acc-add" id="accadd" role="group" aria-label="Add account">
+        <select id="accnew" aria-label="Account type"><option value="bank">Bank</option><option value="ewallet">E-wallet</option><option value="card">Card</option></select>
+        <button class="btn ghost" id="accaddbtn" type="button">+ Add account</button>
+      </div>
+      <div class="bud-actions">
+        <button class="btn" id="balsave" type="button">Save balances</button>
+        <button class="btn ghost" id="balcancel" type="button">Cancel</button>
+      </div>
+    </div>
+    <div class="sub u-mt8" id="balupd"></div>
+  </section>
+<section class="card">
+  <div class="rec-head"><h2 class="u-m0">Record a transaction</h2>
+    <button class="btn ghost" id="scanbtn" type="button" aria-haspopup="true" aria-expanded="false">Scan receipt</button>
+    <input type="file" id="scanfile" accept="image/*" hidden>
+    <input type="file" id="scancam" accept="image/*" capture="environment" hidden>
+  </div>
+  <div class="scanmenu" id="scanmenu" hidden>
+    <button class="btn" id="scantake" type="button">Take photo</button>
+    <button class="btn ghost" id="scanpick" type="button">Choose from gallery</button>
+  </div>
+  <!--SCAN-START-->
+  <div class="scan" id="scanbox" hidden>
+    <div class="scan-top"><img id="scanimg" alt="Receipt preview"><div class="scan-info"><div id="scanstat" role="status" class="sub">Reading receipt...</div><div class="bar"><i id="scanbar"></i></div></div></div>
+    <details id="scanraw" hidden><summary class="sub">Show recognised text</summary><pre id="scantext"></pre></details>
+    <div class="sub" id="scanhint" hidden>Check the fields below, correct anything that is wrong, then tap Add transaction.</div>
+    <button class="btn ghost u-mt8" id="scanclose" type="button">Close scan</button>
+  </div>
+  <!--SCAN-END-->
+  <form id="f" class="grid">
+    <div><label for="date">Date</label><input type="date" id="date" required></div>
+    <div><label for="amount">Amount</label><input type="text" id="amount" inputmode="decimal" autocomplete="off" placeholder="0" aria-describedby="amtfmt" required><div class="sub u-amt" id="amtfmt" aria-live="polite"></div></div>
+    <div class="full"><label>Type</label>
+      <div class="seg5" role="radiogroup" aria-label="Transaction type">
+        <input type="radio" name="type" id="t-exp" value="expense" checked><label for="t-exp">Expense</label>
+        <input type="radio" name="type" id="t-inc" value="income"><label for="t-inc">Income</label>
+        <input type="radio" name="type" id="t-ast" value="asset"><label for="t-ast">Asset</label>
+        <input type="radio" name="type" id="t-lia" value="liability"><label for="t-lia">Liability</label>
+        <input type="radio" name="type" id="t-cap" value="capital"><label for="t-cap">Capital</label>
+      </div>
+      <div class="sub u-mt6" id="typehint"></div>
+    </div>
+    <div class="full" id="dirwrap" hidden><label>Change</label>
+      <div class="seg" role="radiogroup" aria-label="Increase or decrease">
+        <input type="radio" name="dir" id="d-in" value="in" checked><label for="d-in">Increase</label>
+        <input type="radio" name="dir" id="d-out" value="out"><label for="d-out">Decrease</label>
+      </div>
+    </div>
+    <div><label for="cat">Category</label>
+      <select id="cat" aria-label="Category"></select>
+      <div class="catadd" id="catadd"><button class="btn ghost" id="catnewbtn" type="button">+ New category</button></div>
+      <div class="catnew" id="catnew" hidden><input id="catname" maxlength="40" placeholder="New category name" autocomplete="off" aria-label="New category name"><button class="btn" id="catsave" type="button">Add</button><button class="btn ghost" id="catcancel" type="button">Cancel</button></div>
+    </div>
+    <div><label for="desc">Description</label><input id="desc" placeholder="Optional note" autocomplete="off"></div>
+    <div class="full lbox" id="linkwrap">
+      <div class="lhead">Balance sheet effect <span class="tag">automatic</span></div>
+      <div class="sub u-m688" id="linkhint"></div>
+      <div id="linkrows"></div>
+      <button class="btn ghost" id="linkadd" type="button">+ Add another effect</button>
+    </div>
+    <div class="full"><button class="btn" id="add" type="button">Add transaction</button> <span id="msg" class="sub" role="status"></span></div>
+  </form>
+</section>
+</div>
+<div class="page" id="page-report" role="tabpanel" aria-labelledby="tab-report" hidden>
+
+<section class="card">
+  <h2>Monthly summary</h2>
+  <div class="kpis" id="kpis"></div>
+  <div class="mvwrap">
+    <div class="mvhead">Balance sheet movement this month</div>
+    <div class="sub u-m2100">Increases and decreases in assets, liabilities and capital. Capital also includes net profit. These do not change income, expenses or net cash flow.</div>
+    <div class="mvgrid" id="bsm"></div>
+  </div>
+  <div class="bud">
+    <div class="bud-head">
+      <div><div class="sub">Monthly expense budget</div><div class="bud-amt" id="budamt">Not set</div></div>
+      <button class="btn" id="budbtn" type="button">Add budget</button>
+    </div>
+    <div class="bud-edit" id="budedit" hidden>
+      <label for="budget">Budget amount</label>
+      <div class="money"><span class="sym" id="budsym">Rp</span><input type="text" id="budget" inputmode="numeric" autocomplete="off" placeholder="0" aria-label="Budget amount"></div>
+      <div class="bud-actions">
+        <button class="btn" id="budsave" type="button">Save budget</button>
+        <button class="btn ghost" id="budcancel" type="button">Cancel</button>
+        <button class="btn ghost" id="budclear" type="button">Remove</button>
+      </div>
+    </div>
+    <div class="bud-stats" id="budstats"></div>
+    <div class="bar" role="progressbar" aria-label="Budget used" aria-valuemin="0" aria-valuemax="100" id="barwrap"><i id="barfill"></i></div>
+    <div class="bud-msg" id="budmsg" role="status"></div>
+  </div>
+  </section>
+
+<div class="two">
+  <div>
+  <section class="card u-m0014">
+    <h2>Profit and loss by category</h2>
+    <div id="pl"></div>
+  </section>
+  <section class="card u-m0">
+    <h2>Statement of changes in equity</h2>
+    <div class="sub u-mneg">Net profit / (loss) is linked to the profit and loss above for the selected month.</div>
+    <div id="soce"></div>
+    <div class="bs-chk" id="soccchk" role="status"></div>
+  </section>
+  </div>
+  <section class="card u-m0">
+    <h2>Income vs. expenses</h2>
+    <div id="chart"></div>
+    <div class="legend"><span><i class="u-binc"></i>Income</span><span><i class="u-bexp"></i>Expenses</span></div>
+  </section>
+</div>
+
+<section class="card u-mt14">
+  <h2>Balance sheet</h2>
+  <div class="sub u-mneg">Cumulative position up to the end of the selected month, with increases and decreases netted. Total capital includes retained earnings (cumulative net profit) and equals the closing equity below. Assets, liabilities and capital do not affect profit and loss or cash flow. Your carousel card balances are included as assets: each opening amount is paired with Opening balance equity, and transactions that pick a card move both the card and the balance sheet.</div>
+  <div class="bs-grid" id="bs"></div>
+  <div class="bs-chk" id="bschk" role="status"></div>
+</section>
+
+<section class="card u-mt14">
+  <h2 class="u-mb10">Transactions</h2>
+  <div class="tools">
+    <button class="btn" id="imp" type="button">Import CSV</button>
+    <button class="btn ghost" id="tpl" type="button">Download template</button>
+    <button class="btn ghost" id="exp" type="button">Export CSV</button>
+    <input type="file" id="file" accept=".csv,text/csv,text/plain,application/vnd.ms-excel" hidden>
+  </div>
+  <div class="sub u-m004">CSV Type column accepts: income, expense, asset, liability, capital. For the last three, an optional Direction column takes increase or decrease, or use a negative amount for a decrease.</div>
+  <div class="sub u-m804" id="impmsg" role="status"></div>
+  <div id="list"></div>
+</section>
+
+</div>
+</main>
+<footer class="foot"><p>My Financial Report. Your data stays in this browser; nothing is sent to a server.</p></footer>
+</div>
+
+<div class="page" id="page-nfc" role="tabpanel" aria-labelledby="tab-nfc" hidden>
+<div class="wrap">
+  <section class="card u-m0014">
+    <h2>NFC card test</h2>
+    <p class="sub">Hold the back of your phone against an e-money card, then tap Scan NFC. This test shows what the phone can read from the card. It does not change any of your records.</p>
+    <div class="nfc-actions"><button type="button" class="btn" id="nfcscan">Scan NFC</button><button type="button" class="btn ghost" id="nfcstop" hidden>Stop</button></div>
+    <div class="sub u-mt8" id="nfcstatus" role="status" aria-live="polite"></div>
+  </section>
+  <section class="card u-m0" id="nfcres" hidden>
+    <h2>Last card read</h2>
+    <table><tbody id="nfcrows"></tbody></table>
+    <div class="sub u-mt8" id="nfcnote"></div>
+  </section>
+</div>
+</div>
+
+<nav class="tabbar" id="tabbar" role="tablist" aria-label="Main menu">
+  <button class="tab" id="tab-home" role="tab" type="button" data-page="home" aria-selected="true" aria-controls="page-home"><span class="ti" aria-hidden="true">&#127968;</span><span class="tl2">Home</span></button>
+  <button class="tab" id="tab-report" role="tab" type="button" data-page="report" aria-selected="false" aria-controls="page-report" tabindex="-1"><span class="ti" aria-hidden="true">&#128202;</span><span class="tl2">Reports</span></button>
+  <button class="tab" id="tab-nfc" role="tab" type="button" data-page="nfc" aria-selected="false" aria-controls="page-nfc" tabindex="-1"><span class="ti" aria-hidden="true">&#128246;</span><span class="tl2">NFC</span></button>
+</nav>
+
+<script>'use strict';
+let KEY='fin_ledger_tx_v1',CK='fin_ledger_cur_v1',BK='fin_ledger_budget_v1',tx=[],cur='IDR',budget=0;
+const $=i=>document.getElementById(i);
+let BS_TYPES=['asset','liability','capital'],links=[],CATK='fin_ledger_cats_v1',customCats={expense:[],income:[],asset:[],liability:[],capital:[]},LT={income:['asset','liability'],expense:['asset','liability'],liability:['asset','capital'],capital:['asset','liability'],asset:['asset','liability','capital']};
+const LH={income:'Income earned: Asset increase if received (cash, bank or receivable), or Liability decrease if it clears an advance. Profit already flows into Capital through retained earnings.',expense:'Expense incurred: Asset decrease if paid now, or Liability increase if still payable. Use two effects for part-paid. The loss already flows into Capital through retained earnings.',liability:'Pick the matching effect, such as Asset increase when funds are received or Asset decrease when you repay. Choose Opening balance to pair it with Opening balance equity automatically.',capital:'Capital can raise or reduce Assets and Liabilities, for example cash contributed or a debt settled. Choose Opening balance to pair it with Opening balance equity automatically.',asset:'Pay with an Asset decrease, or buy on credit with a Liability increase. Choose Opening balance to pair it with Opening balance equity automatically.'};
+const NONE_OK={asset:1,liability:1,capital:1},OBE='Opening balance equity';
+const TLABEL={expense:'Expense',income:'Income',asset:'Asset',liability:'Liability',capital:'Capital'};
+const DEFT={expense:['Housing','Food','Transport','Utilities','Healthcare','Education','Insurance','Entertainment','Taxes'],income:['Salary','Business income','Investments'],asset:['Cash','Bank','Receivables','Inventory','Equipment','Property','Investments'],liability:['Bank loan','Credit card','Accounts payable','Mortgage','Tax payable'],capital:['Owner capital','Retained earnings','Additional paid-in capital']};
+const DEF=['Salary','Business income','Investments','Housing','Food','Transport','Utilities','Healthcare','Education','Insurance','Entertainment','Taxes'];
+function load(){try{tx=JSON.parse(localStorage.getItem(KEY))||[];tx.forEach(t=>{if(!t.fixed){balanceEntry(t);t.fixed=1}});cur=localStorage.getItem(CK)||'IDR';budget=parseFloat(localStorage.getItem(BK))||0}catch(e){tx=[]}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(tx))}catch(e){$('msg').textContent='Browser storage is unavailable; data will not persist.'}}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>{return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+const SYM={IDR:'Rp',USD:'$',EUR:'\u20ac',GBP:'\u00a3',SGD:'S$',JPY:'\u00a5',AUD:'A$'};
+const LOC={IDR:'id-ID',USD:'en-US',EUR:'de-DE',GBP:'en-GB',SGD:'en-SG',JPY:'ja-JP',AUD:'en-AU'};
+function fmt(n){
+  const d=(cur==='IDR'||cur==='JPY')?0:2,neg=n<0;
+  const num=new Intl.NumberFormat(LOC[cur]||'en-US',{minimumFractionDigits:d,maximumFractionDigits:d}).format(Math.abs(n));
+  return (neg?'\u2212':'')+(SYM[cur]||cur)+'\u00a0'+num;
+}
+function cmp(n){return new Intl.NumberFormat(LOC[cur]||'en-US',{notation:'compact',maximumFractionDigits:1}).format(n)}
+function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function today(){const d=new Date();return ymd(d)+'-'+String(d.getDate()).padStart(2,'0')}
+function inMonth(k){return tx.filter(t=>t.date.slice(0,k.length)===k)}
+const PMK='fin_ledger_pmode_v1';let PM='month';
+function periodKey(){if(PM==='year'){const y=$('year').value;return /^\d{4}$/.test(y)?y:String(new Date().getFullYear())}return $('month').value||ymd(new Date())}
+function yearOptions(sel){const ys=new Set([new Date().getFullYear()]);tx.forEach(t=>ys.add(+t.date.slice(0,4)));const cy=+(($('month').value||'').slice(0,4));if(cy)ys.add(cy);if(sel)ys.add(+sel);
+  const arr=Array.from(ys).filter(y=>y>1900&&y<2200).sort((a,b)=>b-a);$('year').innerHTML=arr.map(y=>`<option value="${y}"${String(y)===String(sel)?' selected':''}>${y}</option>`).join('')}
+function setPM(m,store){PM=m==='year'?'year':'month';$('pmode').value=PM;$('mwrap').hidden=PM==='year';$('ywrap').hidden=PM!=='year';
+  if(PM==='year')yearOptions(($('month').value||ymd(new Date())).slice(0,4));if(store){try{localStorage.setItem(PMK,PM)}catch(e){}}}
+function sum(a,type){return a.filter(t=>t.type===type).reduce((s,t)=>s+t.amount,0)}
+
+function numFmt(n){const d=(cur==='IDR'||cur==='JPY')?0:2;return new Intl.NumberFormat(LOC[cur]||'en-US',{minimumFractionDigits:0,maximumFractionDigits:d}).format(n)}
+function sepChar(kind){const parts=new Intl.NumberFormat(LOC[cur]||'en-US',{minimumFractionDigits:1}).formatToParts(1234567.5);
+  for(let i=0;i<parts.length;i++){if(parts[i].type===kind)return parts[i].value}return kind==='group'?',':'.'}
+function maskMoney(el){
+  const dec=sepChar('decimal'),grp=sepChar('group'),allowDec=!(cur==='IDR'||cur==='JPY');
+  let raw=el.value,out='',seenDec=false,decDigits=0,intDigits='';
+  for(let i=0;i<raw.length;i++){const c=raw[i];
+    if(c>='0'&&c<='9'){if(seenDec){if(decDigits<2){out+=c;decDigits++}}else{intDigits+=c}}
+    else if(allowDec&&!seenDec&&intDigits.length&&(c===dec||(c==='.'&&grp!=='.'))){seenDec=true}}
+  intDigits=intDigits.replace(/^0+(?=\d)/,'');
+  const grouped=intDigits.replace(/\B(?=(\d{3})+(?!\d))/g,grp);
+  el.value=grouped+(seenDec?dec+out:'');
+}
+function parseMoney(str){
+  const dec=sepChar('decimal'),grp=sepChar('group');
+  let t=String(str).split(grp).join('');
+  if(dec!=='.')t=t.split(dec).join('.');
+  return parseFloat(t)||0;
+}
+function setBudgetEditing(on){
+  $('budedit').hidden=!on;
+  if(on){$('budsym').textContent=SYM[cur]||cur;$('budget').value=budget>0?numFmt(budget):'';$('budbtn').textContent='Close';
+    try{$('budget').focus()}catch(e){}}
+  else{$('budbtn').textContent=budget>0?'Edit budget':'Add budget'}
+}
+function renderBudget(exp,yr){
+  const f=$('barfill'),w=$('barwrap'),has=budget>0,bud=yr?budget*12:budget;
+  if(!$('budedit').hidden){$('budsym').textContent=SYM[cur]||cur}else{$('budbtn').textContent=has?'Edit budget':'Add budget'}
+  $('budamt').textContent=has?fmt(budget):'Not set';
+  $('budclear').style.display=has?'':'none';
+  if(!has){f.style.width='0';f.className='';w.setAttribute('aria-valuenow','0');$('budstats').innerHTML='';
+    $('budmsg').textContent='Tap Add budget to set a monthly spending limit.';return}
+  const pct=exp/bud*100,left=bud-exp;
+  f.style.width=Math.min(pct,100)+'%';f.className=pct>100?'over':(pct>=80?'warn':'');
+  w.setAttribute('aria-valuenow',String(Math.round(Math.min(pct,100))));
+  $('budstats').innerHTML=`<div><span>${yr?'Yearly budget':'Budget'}</span><b>${fmt(bud)}</b></div><div><span>Spent</span><b>${fmt(exp)}</b></div><div><span>${left>=0?'Remaining':'Over by'}</span><b class="${left>=0?'pos':'neg'}">${fmt(Math.abs(left))}</b></div>`;
+  $('budmsg').textContent=left>=0?(Math.round(pct)+'% of budget used this period.'):(`Over budget: ${Math.round(pct)}% of the limit is used.`);
+}
+function accById(id){const k=accRemap[id]||id;return accts.filter(x=>x.id===k)[0]}
+function bsList(){const o=[];
+  /* carousel cards: the opening amount is an asset, paired with Opening balance equity so the sheet stays balanced */
+  accts.forEach(a=>{const v=Math.round(a.amount*100)/100;if(!v)return;const d=v>0?'in':'out',m=Math.abs(v);
+    o.push({date:'0000-01-01',type:'asset',category:accLabel(a,accts),amount:m,dir:d});
+    o.push({date:'0000-01-01',type:'capital',category:OBE,amount:m,dir:d})});
+  tx.forEach(t=>{
+    if(BS_TYPES.indexOf(t.type)>-1)o.push({date:t.date,type:t.type,category:t.category,amount:t.amount,dir:t.dir==='out'?'out':'in'});
+    (t.links||[]).forEach(l=>{let cat=l.cat,ca=(l.t==='asset'&&l.acc)?accById(l.acc):null;if(ca)cat=accLabel(ca,accts);
+      o.push({date:t.date,type:l.t,category:cat,amount:l.amt,dir:l.dir==='out'?'out':'in'})})});return o}
+function defLinks(){const t=curType(),d=curDir();
+  if(t==='income')return[{t:'asset',dir:'in',cat:'',amt:''}];
+  if(t==='expense')return[{t:'asset',dir:'out',cat:'',amt:''}];
+  if(t==='asset')return[{t:'none',dir:'out',cat:'',amt:''}];
+  if(t==='liability')return[{t:'none',dir:'in',cat:'',amt:''}];
+  return[{t:'none',dir:'in',cat:'',amt:''}]}
+function opt(v,l,on){return `<option value="${v}"${on?' selected':''}>${l}</option>`}
+function amtVal(){return parseMoney($('amount').value)}
+function updRem(){const el=$('lrem');if(!el||!links.length)return;const a=amtVal(),a0=parseMoney(links[0].amt||'');el.value=a>0?fmt(Math.max(0,a-a0)):''}
+function updAmtFmt(){const v=amtVal();$('amtfmt').textContent=v>0?fmt(v):''}
+function renderLinks(){
+  const t=curType(),allow=LT[t]||[],canNone=!!NONE_OK[t];
+  $('linkhint').textContent=LH[t]||'';
+  if(!links.length)links=defLinks();
+  $('linkrows').innerHTML=links.map((l,i)=>{
+    if(l.t==='none'&&!canNone){l.t=allow[0]}
+    if(l.t!=='none'&&allow.indexOf(l.t)<0){l.t=canNone?'none':allow[0]}
+    const tgt=(canNone?opt('none','Opening balance (auto-balance)',l.t==='none'):'')+allow.map(a=>opt(a,TLABEL[a],l.t===a)).join('');
+    let h=`<div class="lrow"><select data-i="${i}" data-f="t" aria-label="Effect on">${tgt}</select>`;
+    if(l.t==='none'){return h+'</div>'}
+    const os=accOpts(l.t),vals=os.map(o=>o.v),cat=l.cat&&vals.indexOf(l.cat)>-1?l.cat:(vals[0]||'');l.cat=cat;
+    h+=`<select data-i="${i}" data-f="dir" aria-label="Direction">${opt('in','Increase',l.dir==='in')}${opt('out','Decrease',l.dir==='out')}</select><select data-i="${i}" data-f="cat" aria-label="Account">${os.map(o=>opt(esc(o.v),esc(o.label),o.v===cat)).join('')}</select>`;
+    if(links.length>1)h+=(i===0?`<input data-i="0" data-f="amt" inputmode="decimal" autocomplete="off" value="${esc(l.amt||'')}" placeholder="Amount of this effect" aria-label="Amount of first effect">`:'<input id="lrem" readonly aria-label="Remaining amount"><button class="x" type="button" data-rm="1" aria-label="Remove second effect">\u00d7 Remove</button>');
+    return h+'</div>'}).join('');
+  $('linkadd').hidden=links.length>1||links[0].t==='none';updRem();
+}
+function buildLinks(amt){
+  const act=links.filter(l=>l.t!=='none');
+  if(!act.length)return[];
+  let a0=amt,a1=0;
+  if(links.length>1){a0=parseMoney(links[0].amt||'');a1=amt-a0;
+    if(!(a0>0)||!(a1>0)){$('msg').textContent='With two effects, the first amount must be above zero and below the transaction amount.';return false}}
+  return links.map((l,i)=>{let c=l.cat||'',acc;
+    if(c.charAt(0)==='@'){const ca=accts.filter(x=>'@'+x.id===c)[0];if(ca){acc=ca.id;c=accLabel(ca,accts)}else c=''}
+    const o={t:l.t,dir:l.dir,cat:c||(l.t==='liability'?'Accounts payable':'Bank'),amt:i?a1:a0};if(acc)o.acc=acc;return o})}
+function sgn(t){return t.dir==='out'?-t.amount:t.amount}
+/* Every entry must have equal debits and credits. Assets increase = debit; liabilities and capital increase = credit. */
+function sideOf(type,dir){const inc=dir!=='out';return type==='asset'?(inc?'D':'C'):(inc?'C':'D')}
+function entryNet(list){let d=0,c=0;list.forEach(e=>{if(sideOf(e.type,e.dir)==='D')d+=e.amount;else c+=e.amount});return d-c}
+function obeFor(rec,net){ // net>0: debits exceed credits, so a CREDIT is needed; net<0: a DEBIT is needed
+  const needCredit=net>0,amt=Math.abs(net),main=rec.type;
+  function dirFor(type){ // direction that produces the needed side for this account type
+    const inc=sideOf(type,'in')===(needCredit?'C':'D');return inc?'in':'out'}
+  if(main==='capital'||main==='income'||main==='expense')return{t:'asset',dir:dirFor('asset'),cat:'Bank',amt:amt};
+  return{t:'capital',dir:dirFor('capital'),cat:OBE,amt:amt}}
+function balanceEntry(rec){ // returns rec with auto links so that the entry balances
+  const list=[];
+  if(BS_TYPES.indexOf(rec.type)>-1)list.push({type:rec.type,dir:rec.dir==='out'?'out':'in',amount:rec.amount});
+  (rec.links||[]).forEach(l=>{list.push({type:l.t,dir:l.dir==='out'?'out':'in',amount:l.amt})});
+  if(rec.type==='income'||rec.type==='expense'){ // P&L side is part of the entry: income = credit, expense = debit
+    list.push({type:'pl',dir:rec.type,amount:rec.amount});}
+  let d=0,c=0;list.forEach(e=>{const sd=e.type==='pl'?(e.dir==='expense'?'D':'C'):sideOf(e.type,e.dir);if(sd==='D')d+=e.amount;else c+=e.amount});
+  const net=Math.round((d-c)*100)/100;
+  if(Math.abs(net)<0.005)return rec;
+  rec.links=(rec.links||[]).concat([obeFor(rec,net)]);rec.auto=true;return rec}
+function curDir(){const r=document.querySelector('input[name=dir]:checked');return r?r.value:'in'}
+function loadCats(){try{const o=JSON.parse(localStorage.getItem(CATK));if(o&&typeof o==='object')Object.keys(customCats).forEach(k=>{if(Array.isArray(o[k]))customCats[k]=o[k].map(String).filter(Boolean)})}catch(e){}}
+function saveCats(){try{localStorage.setItem(CATK,JSON.stringify(customCats))}catch(e){}}
+function catList(t){const cs=(DEFT[t]||[]).concat(customCats[t]||[]),seen={};tx.forEach(x=>{if(x.type===t)cs.push(x.category)});
+  return cs.filter(c=>{const k=c.toLowerCase();if(seen[k])return false;seen[k]=1;return true})}
+function accList(t){const cs=(DEFT[t]||[]).concat(customCats[t]||[]),seen={};bsList().forEach(x=>{if(x.type===t)cs.push(x.category)});
+  return cs.filter(c=>{const k=String(c).toLowerCase();if(!k||seen[k])return false;seen[k]=1;return true})}
+function accOpts(t){
+  const o=[],seen={},hasBank=accts.some(a=>a.type==='bank');
+  if(t==='asset'){
+    accts.forEach(a=>{const nm=accLabel(a,accts);seen[nm.toLowerCase()]=1;o.push({v:'@'+a.id,label:a.type==='cash'?nm:nm+' ('+tLabel(a.type)+')'})});
+    seen['cash and bank']=1;seen['cash']=1;if(hasBank)seen['bank']=1}
+  accList(t).forEach(n=>{const k=String(n).toLowerCase();if(seen[k])return;seen[k]=1;o.push({v:n,label:n})});
+  return o}
+function fillCat(keep){const t=curType(),el=$('cat'),cur0=keep!==undefined?keep:el.value,cs=catList(t);
+  el.innerHTML=cs.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  if(cur0&&cs.indexOf(cur0)>-1)el.value=cur0;else if(cs.length)el.value=cs[0]}
+function addCategory(t,name){name=String(name||'').trim().replace(/\s+/g,' ');if(!name)return'';
+  const ex=catList(t).filter(c=>c.toLowerCase()===name.toLowerCase())[0];if(ex)return ex;
+  customCats[t].push(name);saveCats();return name}
+function curType(){const r=document.querySelector('input[name=type]:checked');return r?r.value:'expense'}
+function endOfMonth(k){const p=k.split('-').map(Number);return new Date(p[0],p[1],0)}
+let BS_CAP=0;
+function periodEnd(k){return k.length===4?k+'-12-31':k+'-31'}
+function profitBefore(k){const y=k.slice(0,4);let v=0;tx.forEach(t=>{if(t.type!=='income'&&t.type!=='expense')return;if(t.date.slice(0,4)<y)v+=t.type==='income'?t.amount:-t.amount});return v}
+function profitUpTo(k,incl){let v=0;tx.forEach(t=>{if(t.type!=='income'&&t.type!=='expense')return;const m=t.date.slice(0,k.length);if(m<k||(incl&&m===k))v+=t.type==='income'?t.amount:-t.amount});return v}
+function renderBS(k){
+  let lim=periodEnd(k),sums={asset:0,liability:0,capital:0},by={asset:{},liability:{},capital:{}},cnt=0;
+  bsList().forEach(t=>{if(t.date<=lim){cnt++;sums[t.type]+=sgn(t);by[t.type][t.category]=(by[t.type][t.category]||0)+sgn(t)}});
+  const re=profitUpTo(k,true);sums.capital+=re;BS_CAP=sums.capital;
+  const pre=profitBefore(k),cyp=re-pre,ex=Math.abs(cyp)>=0.005?[['Current year profit',cyp]]:null;
+  if(Math.abs(pre)>=0.005){const oc='Owner capital';by.capital[oc]=(by.capital[oc]||0)+pre}
+  function col(type,title,extra){const rows=Object.keys(by[type]).filter(c=>Math.abs(by[type][c])>=0.005).sort((a,b)=>by[type][b]-by[type][a]);
+    let h=`<div class="bs-col"><h3>${title}</h3><table>`;
+    if(!rows.length&&!extra)h+='<tr><td class="sub" colspan="2">None recorded</td></tr>';
+    rows.forEach(c=>{h+=`<tr><td>${esc(c)}</td><td>${fmt(by[type][c])}</td></tr>`});
+    if(extra)extra.forEach(x=>{h+=`<tr><td>${x[0]}</td><td>${fmt(x[1])}</td></tr>`});
+    return h+'<tr class="tot"><td>Total '+title.toLowerCase()+'</td><td>'+fmt(sums[type])+'</td></tr></table></div>'}
+  $('bs').innerHTML=col('asset','Assets')+'<div class="bs-col">'+col('liability','Liabilities')+col('capital','Capital',ex)+'</div>';
+  const right=sums.liability+sums.capital,diff=sums.asset-right,box=$('bschk');
+  if(!cnt&&!ex&&Math.abs(pre)<0.005){box.className='bs-chk';box.textContent='No balance sheet entries yet. Choose Asset, Liability or Capital as the type when recording a transaction.';return}
+  if(Math.abs(diff)<0.005){box.className='bs-chk ok';box.textContent=`Balanced: assets equal liabilities plus capital (${fmt(sums.asset)}).`}
+  else{box.className='bs-chk diff';box.textContent=`Not balanced: assets ${fmt(sums.asset)} vs liabilities plus capital ${fmt(right)}. Difference ${fmt(Math.abs(diff))}${diff>0?' (assets higher).':' (liabilities and capital higher).'}`}
+}
+function renderSOCE(k,net){
+  let oc=0,ct=0,wd=0;
+  bsList().forEach(t=>{if(t.type!=='capital')return;const m=t.date.slice(0,k.length);
+    if(m<k)oc+=sgn(t);else if(m===k){if(t.dir==='out')wd+=t.amount;else ct+=t.amount}});
+  const ore=profitUpTo(k,false),openT=oc+ore,pre=profitBefore(k),ytd=ore-pre,ocOpen=oc+pre,cc=ocOpen+ct-wd,closeT=cc+ytd+net;
+  function row(l,v,cls){return `<tr class="${cls||''}"><td>${l}</td><td>${fmt(v)}</td></tr>`}
+  $('soce').innerHTML=`<table><tr><th>Description</th><th>Amount</th></tr>${row(k.length===4||k.slice(5)==='01'?'Opening equity (closing balance of last year)':'Opening equity (start of period)',openT,'tot')}${row('Owner capital',ocOpen,'ind')}${Math.abs(ytd)>=0.005?row('Current year profit so far',ytd,'ind'):''}<tr><td colspan="2"><b>Changes during the period</b></td></tr>${row('Capital contributions',ct)}${row('Capital withdrawals',-wd)}<tr><td>Net profit / (loss) <span class="tag">from P&amp;L</span></td><td class="${net>=0?'pos':'neg'}">${fmt(net)}</td></tr>${row('Closing equity (end of period)',closeT,'tot')}${row('Owner capital',cc,'ind')}${row('Current year profit',ytd+net,'ind')}</table>`;
+  const box=$('soccchk'),ok=Math.abs(closeT-BS_CAP)<0.005;
+  box.className='bs-chk '+(ok?'ok':'diff');
+  box.textContent=ok?(`Closing equity equals Total capital on the balance sheet (${fmt(closeT)}).`):(`Closing equity ${fmt(closeT)} differs from Total capital on the balance sheet ${fmt(BS_CAP)}.`);
+}
+function renderMovement(k,net){
+  const any=bsList().length>0,box=$('bsm');
+  if(!any){box.innerHTML='<div class="sub u-span">Record an Asset, Liability or Capital entry to see its monthly movement here.</div>';return}
+  const lim=periodEnd(k),mv={asset:{i:0,d:0,c:0},liability:{i:0,d:0,c:0},capital:{i:0,d:0,c:0}};
+  bsList().forEach(t=>{if(t.date>lim)return;const m=mv[t.type];m.c+=sgn(t);
+    if(t.date.slice(0,k.length)===k){if(t.dir==='out')m.d+=t.amount;else m.i+=t.amount}});
+  mv.capital.c+=profitUpTo(k,true);
+  const names={asset:'Assets',liability:'Liabilities',capital:'Capital'};
+  box.innerHTML=BS_TYPES.map(ty=>{const m=mv[ty],cap=ty==='capital',ch=m.i-m.d+(cap?net:0),open=m.c-ch;
+    return `<div class="mv ${ty}"><span class="l">${names[ty]}</span><b>${ch>0?'+':''}${fmt(ch)}</b><div class="d"><span>Opening balance</span><em>${fmt(open)}</em></div><div class="d"><span>Increase</span><em>+${fmt(m.i)}</em></div><div class="d"><span>Decrease</span><em>−${fmt(m.d)}</em></div>${cap?`<div class="d"><span>Net profit / (loss)</span><em>${fmt(net)}</em></div>`:''}<div class="cl"><span>Closing balance</span><span>${fmt(m.c)}</span></div></div>`}).join('');
+}
+function updateTypeUI(){
+  const t=curType(),bs=BS_TYPES.indexOf(t)>-1,dr=curDir();
+  const hints={expense:'Reduces profit. Counted in expenses and cash flow.',income:'Increases profit. Counted in income and cash flow.',
+    asset:{in:'Increase: you acquire or add an asset, such as buying equipment.',out:'Decrease: you sell, write off or reduce an asset.'},
+    liability:{in:'Increase: you take on more debt, such as a new loan.',out:'Decrease: you repay or settle a debt.'},
+    capital:{in:'Increase: capital contributed or earnings retained.',out:'Decrease: an owner withdrawal or capital reduction.'}};
+  const h=hints[t];$('typehint').textContent=(bs?h[dr]:h)||'';
+  $('dirwrap').hidden=!bs;renderLinks();
+  fillCat();
+}
+function render(){
+  const k=periodKey(),m=inMonth(k);
+  const inc=sum(m,'income'),exp=sum(m,'expense'),net=inc-exp;
+  $('kpis').innerHTML=`<div class="kpi i"><span>Total income</span><b>${fmt(inc)}</b></div><div class="kpi e"><span>Total expenses</span><b>${fmt(exp)}</b></div><div class="kpi n"><span>Net cash flow</span><b class="${net>=0?'pos':'neg'}">${fmt(net)}</b></div>`;
+  $('pl').innerHTML=pl(m,inc,exp,net);renderBudget(exp,k.length===4);
+  $('chart').innerHTML=chart(k);
+  const rows=m.slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+  $('list').innerHTML=rows.length?rows.map(t=>{
+    const d=new Date(t.date+'T00:00:00').toLocaleDateString(dloc(),{day:'numeric',month:'short'});
+    return `<div class="tx"><div class="m"><div><b>${esc(t.category)}</b>${BS_TYPES.indexOf(t.type)>-1?`<span class="tag" title="${TLABEL[t.type]}${t.dir==='out'?' decrease':' increase'}" aria-label="${TLABEL[t.type]}${t.dir==='out'?' decrease':' increase'}">${TLABEL[t.type]}${t.dir==='out'?' \u2193':' \u2191'}</span>`:''}</div><div class="sub">${d}${t.desc?' · '+esc(t.desc):''}${t.links&&t.links.length?' · '+t.links.map(l=>esc(l.cat)+(l.dir==='out'?' \u2193':' \u2191')).join(', '):''}</div></div><div class="amt ${t.type==='income'?'pos':(t.type==='expense'?'neg':'')}">${t.type==='income'?'+':(t.type==='expense'?'−':(t.dir==='out'?'−':'+'))}${fmt(t.amount)}</div><button type="button" class="x" aria-label="Delete transaction" data-id="${t.id}">×</button></div>`}).join(''):
+    '<div class="empty">No transactions in this period. Add one using the form above.</div>';
+  renderBS(k);renderSOCE(k,net);renderMovement(k,net);updateTypeUI();renderBal();
+}
+
+function group(m,type){const g={};m.filter(t=>t.type===type).forEach(t=>{g[t.category]=(g[t.category]||0)+t.amount});
+  return Object.keys(g).map(c=>[c,g[c]]).sort((a,b)=>b[1]-a[1])}
+
+function pl(m,inc,exp,net){
+  if(!m.length)return '<div class="empty">No data for this period.</div>';
+  let h='<table><tr><th>Category</th><th>Amount</th></tr><tr><td colspan="2"><b>Revenue</b></td></tr>';
+  group(m,'income').forEach(r=>{h+=`<tr><td>${esc(r[0])}${inc>0?` <span class="pct pct-i">${Math.round(r[1]/inc*100)}%</span>`:''}</td><td>${fmt(r[1])}</td></tr>`});
+  h+=`<tr class="tot"><td>Total revenue</td><td>${fmt(inc)}</td></tr><tr><td colspan="2"><b>Operating expenses</b></td></tr>`;
+  group(m,'expense').forEach(r=>{h+=`<tr><td>${esc(r[0])}${exp>0?` <span class="pct pct-e">${Math.round(r[1]/exp*100)}%</span>`:''}</td><td>(${fmt(r[1])})</td></tr>`});
+  h+=`<tr class="tot"><td>Total expenses</td><td>(${fmt(exp)})</td></tr><tr class="tot"><td>Net profit / (loss)</td><td class="${net>=0?'pos':'neg'}">${fmt(net)}</td></tr></table>`;
+  return h;
+}
+
+function chart(k){
+  const yr=k.length===4,p=k.split('-').map(Number),data=[],n=yr?12:6;
+  for(let i=n-1;i>=0;i--){const d=yr?new Date(p[0],11-i,1):new Date(p[0],p[1]-1-i,1),key=ymd(d),m=inMonth(key);
+    data.push({l:d.toLocaleDateString(dloc(),{month:'short'}),i:sum(m,'income'),e:sum(m,'expense')})}
+  const max=Math.max.apply(null,[1].concat(data.map(d=>Math.max(d.i,d.e))));
+  let W=420,H=240,pb=26,pt=18,ch=H-pb-pt,gw=W/n,bw=yr?13:22,s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${yr?'Income and expenses by month for the year':'Monthly income and expenses bar chart'}">`;
+  data.forEach((d,j)=>{
+    const x=j*gw+gw/2,hi=d.i/max*ch,he=d.e/max*ch;
+    s+='<rect class="bi" rx="3" x="'+(x-bw-2)+'" y="'+(pt+ch-hi)+'" width="'+bw+'" height="'+hi+'"/>'+
+       '<rect class="be" rx="3" x="'+(x+2)+'" y="'+(pt+ch-he)+'" width="'+bw+'" height="'+he+'"/>';
+    if(d.i)s+=`<text class="tv" text-anchor="middle" x="${x-bw/2-2}" y="${pt+ch-hi-4}">${cmp(d.i)}</text>`;
+    if(d.e)s+='<text class="tv" text-anchor="middle" x="'+(x+bw/2+2)+'" y="'+(pt+ch-he-4)+'">'+cmp(d.e)+'</text>';
+    s+=`<text class="tl" text-anchor="middle" x="${x}" y="${H-8}">${d.l}</text>`;
+  });
+  return s+'<line x1="0" x2="'+W+'" y1="'+(pt+ch)+'" y2="'+(pt+ch)+'" stroke="var(--line)"/></svg>';
+}
+
+$('add').onclick=()=>{
+  const date=$('date').value,cat=($('cat').value||'').trim(),amt=amtVal(),type=document.querySelector('input[name=type]:checked').value;
+  if(!date||!cat||!(amt>0)){$('msg').textContent='Choose a date and a category, and enter an amount greater than zero.';return}
+  const nt={id:Date.now(),date:date,category:cat,desc:$('desc').value.trim(),amount:amt,type:type};if(BS_TYPES.indexOf(type)>-1)nt.dir=curDir();
+  const lk=buildLinks(amt);if(lk===false)return;if(lk.length)nt.links=lk;balanceEntry(nt);tx.push(nt);
+  save();$('month').value=date.slice(0,7);if(PM==='year')yearOptions(date.slice(0,4));$('amount').value='';$('amtfmt').textContent='';$('desc').value='';
+  $('msg').textContent='Transaction added.';links=defLinks();render();
+};
+$('list').onclick=e=>{const id=e.target.getAttribute('data-id');
+  if(id&&ask('Delete this transaction?')){tx=tx.filter(t=>String(t.id)!==id);save();render()}};
+$('budbtn').onclick=()=>{setBudgetEditing($('budedit').hidden)};
+$('budget').oninput=function(){maskMoney(this)};
+$('budget').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('budsave').onclick()}};
+$('budsave').onclick=()=>{const v=parseMoney($('budget').value);
+  if(!(v>0)){$('budmsg').textContent='Enter a budget amount greater than zero.';return}
+  budget=v;try{localStorage.setItem(BK,String(budget))}catch(e){}setBudgetEditing(false);render()};
+$('budcancel').onclick=()=>{setBudgetEditing(false);render()};
+$('budclear').onclick=()=>{if(!ask('Remove the monthly budget?'))return;budget=0;try{localStorage.removeItem(BK)}catch(e){}setBudgetEditing(false);render()};
+Array.prototype.forEach.call(document.querySelectorAll('input[name=type],input[name=dir]'),r=>{r.onchange=()=>{links=defLinks();updateTypeUI()}});
+$('linkadd').onclick=()=>{let t=curType(),f=links[0]||{t:'asset',dir:'in'},n={t:'liability',dir:f.dir==='out'?'out':'in',cat:'',amt:''};
+  if(t==='expense')n={t:'liability',dir:'in',cat:'',amt:''};else if(t==='income')n={t:'asset',dir:'in',cat:'',amt:''};
+  if((LT[t]||[]).indexOf(n.t)<0)n.t=(LT[t]||['asset'])[0];links.push(n);renderLinks()};
+$('linkrows').onchange=e=>{const el=e.target,i=el.getAttribute('data-i'),f=el.getAttribute('data-f');
+  if(i===null||(f!=='t'&&f!=='dir'&&f!=='cat'))return;links[+i][f]=el.value;if(f==='t'){links[+i].cat='';if(el.value==='none'&&links.length>1)links.length=1}renderLinks()};
+$('linkrows').oninput=e=>{const el=e.target,i=el.getAttribute('data-i'),f=el.getAttribute('data-f');if(i===null||!f)return;
+  if(f==='amt'){maskMoney(el);links[0].amt=el.value;updRem()}else if(f==='cat')links[+i].cat=el.value};
+$('linkrows').onclick=e=>{if(e.target.getAttribute&&e.target.getAttribute('data-rm')){links.length=1;renderLinks()}};
+$('amount').oninput=function(){maskMoney(this);updAmtFmt();updRem()};
+$('cat').onchange=()=>{};
+$('catnewbtn').onclick=()=>{$('catnew').hidden=false;$('catadd').hidden=true;try{$('catname').focus()}catch(e){}};
+$('catcancel').onclick=()=>{$('catnew').hidden=true;$('catadd').hidden=false;$('catname').value=''};
+$('catsave').onclick=()=>{const t=curType(),nm=addCategory(t,$('catname').value);if(!nm){$('msg').textContent='Enter a category name.';return}
+  fillCat(nm);$('cat').value=nm;$('catname').value='';$('catnew').hidden=true;$('catadd').hidden=false;$('msg').textContent=`Category added: ${nm}.`;updateTypeUI()};
+$('catname').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('catsave').onclick()}};
+$('month').onchange=render;$('year').onchange=render;
+$('pmode').onchange=()=>{setPM($('pmode').value,true);render()};
+$('cur').onchange=function(){cur=this.value;try{localStorage.setItem(CK,cur)}catch(e){}render()};
+function csvEscape(v){return `"${String(v).replace(/"/g,'""')}"`}
+function downloadCSV(name,rows){
+  const csv=rows.map(x=>x.map(csvEscape).join(',')).join('\r\n');
+  if(window.AndroidBridge&&typeof AndroidBridge.saveFile==='function'){ /* Android app: WebView cannot download blob links, so hand the text to the app's save dialog */
+    try{AndroidBridge.saveFile(name,'\ufeff'+csv);return}catch(e){}
+  }
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download=name;
+  document.body.appendChild(a);a.click();setTimeout(()=>{document.body.removeChild(a)},0);
+}
+function parseCSV(text){
+  text=text.replace(/^\ufeff/,'');
+  const first=text.split(/\r?\n/)[0]||'';
+  const delim=(first.split(';').length>first.split(',').length)?';':(first.split('\t').length>first.split(',').length?'\t':',');
+  let rows=[],row=[],f='',q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+    else if(c==='"'){q=true}
+    else if(c===delim){row.push(f);f=''}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(f);f='';rows.push(row);row=[]}
+    else f+=c}
+  if(f!==''||row.length){row.push(f);rows.push(row)}
+  return rows.filter(r=>r.some(x=>String(x).trim()!==''));
+}
+function normDate(v){
+  v=String(v).trim();let m;
+  if(m=v.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/))return m[1]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[3]).slice(-2);
+  if(m=v.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{4})/)){
+    let a=+m[1],b=+m[2],d=a,mo=b;if(b>12&&a<=12){d=b;mo=a}
+    return m[3]+'-'+('0'+mo).slice(-2)+'-'+('0'+d).slice(-2)}
+  if(/^\d{5}$/.test(v)){const dt=new Date(Date.UTC(1899,11,30)+(+v)*86400000);return dt.toISOString().slice(0,10)}
+  return '';
+}
+function validDate(d){if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return false;const x=new Date(d+'T00:00:00');return !isNaN(x)&&ymd(x)+'-'+('0'+x.getDate()).slice(-2)===d}
+function normAmount(v){
+  v=String(v).trim().replace(/[^\d.,\-()]/g,'');const neg=/^\(.*\)$/.test(v)||v.indexOf('-')>-1;
+  v=v.replace(/[()\-]/g,'');if(!v)return NaN;
+  const lc=v.lastIndexOf(','),ld=v.lastIndexOf('.'),dec=Math.max(lc,ld);
+  if(lc>-1&&ld>-1){const decCh=lc>ld?',':'.',grp=decCh===','?'.':',';v=v.split(grp).join('');if(decCh===',')v=v.replace(',','.')}
+  else if(dec>-1){const cnt=v.split(v[dec]).length-1,after=v.length-dec-1;
+    if(cnt>1||after===3){v=v.replace(/[.,]/g,'')}else if(v[dec]===','){v=v.replace(',','.')}}
+  const n=parseFloat(v);return isNaN(n)?NaN:(neg?-n:n);
+}
+function importRows(rows){
+  if(!rows.length)return{added:0,skipped:0,notes:['The file is empty.']};
+  const head=rows[0].map(h=>String(h).trim().toLowerCase());
+  const idx={date:head.indexOf('date'),type:head.indexOf('type'),category:head.indexOf('category'),desc:head.indexOf('description'),amount:head.indexOf('amount'),dir:head.indexOf('direction'),links:head.indexOf('links')};
+  const hasHead=idx.date>-1&&idx.amount>-1&&idx.category>-1;
+  if(!hasHead){return{added:0,skipped:0,notes:['Headers not found. Use the columns: Date, Type, Category, Description, Amount. Tap Download template for an example.']}}
+  let added=0,skipped=0,notes=[],base=Date.now();
+  rows.slice(1).forEach((r,n)=>{
+    const line=n+2,date=normDate(r[idx.date]||''),cat=String(r[idx.category]||'').trim(),amt=normAmount(r[idx.amount]||'');
+    let type=idx.type>-1?String(r[idx.type]||'').trim().toLowerCase():'';
+    const TM={income:'income','in':'income',credit:'income',revenue:'income',pemasukan:'income',expense:'expense','out':'expense',debit:'expense',cost:'expense',pengeluaran:'expense',
+      asset:'asset',assets:'asset',aset:'asset',harta:'asset',liability:'liability',liabilities:'liability',liabilitas:'liability',utang:'liability',hutang:'liability',
+      capital:'capital',equity:'capital',modal:'capital','owner capital':'capital'};
+    if(type&&TM[type])type=TM[type];
+    else if(type)type='bad';
+    else type=(!isNaN(amt)&&amt<0)?'expense':'income';
+    if(!validDate(date)||!cat||isNaN(amt)||amt===0||type==='bad'){skipped++;if(notes.length<5)notes.push(`Row ${line} skipped: ${!validDate(date)?'invalid date':!cat?'missing category':(isNaN(amt)||amt===0)?'invalid amount':'type must be income, expense, asset, liability or capital'}.`);return}
+    const rec={id:base+n,date:date,category:cat,desc:idx.desc>-1?String(r[idx.desc]||'').trim():'',amount:Math.abs(amt),type:type};
+    if(BS_TYPES.indexOf(type)>-1){const dw=idx.dir>-1?String(r[idx.dir]||'').trim().toLowerCase():'',DM={increase:'in','in':'in',add:'in',tambah:'in',naik:'in',decrease:'out','out':'out',reduce:'out',kurang:'out',turun:'out'};
+      rec.dir=DM[dw]||(amt<0?'out':'in')}
+    if(idx.links>-1){const lk=[];String(r[idx.links]||'').split(';').forEach(part=>{const a=part.split('|'),la=parseFloat(a[3]);
+      if(BS_TYPES.indexOf(a[0])>-1&&(a[1]==='in'||a[1]==='out')&&la>0)(function(){const ao={t:a[0],dir:a[1],cat:(a[2]||'').trim()||'Bank',amt:la},ac=(a[4]||'').trim();if(ac&&a[0]==='asset'&&accts.some(x=>x.id===ac))ao.acc=ac;lk.push(ao)})()});if(lk.length)rec.links=lk}
+    balanceEntry(rec);tx.push(rec);added++;
+  });
+  return{added:added,skipped:skipped,notes:notes};
+}
+$('imp').onclick=()=>{$('file').value='';$('file').click()};
+$('file').onchange=function(){
+  const f=this.files&&this.files[0];if(!f)return;
+  const m=$('impmsg');
+  if(/\.xlsx?$/i.test(f.name)){m.className='sub impmsg-bad';m.textContent='Excel files cannot be read directly. In Excel, choose Save As, then CSV, and import that file.';return}
+  const rd=new FileReader();
+  rd.onerror=()=>{m.className='sub impmsg-bad';m.textContent='The file could not be read. Try again.'};
+  rd.onload=()=>{
+    const res=importRows(parseCSV(String(rd.result)));
+    if(res.added){save();const last=tx[tx.length-1];if(last){$('month').value=last.date.slice(0,7);if(PM==='year')yearOptions(last.date.slice(0,4))}render()}
+    m.className='sub '+(res.added?'impmsg-ok':'impmsg-bad');
+    m.textContent=res.added+' transaction'+(res.added===1?'':'s')+' imported'+(res.skipped?`, ${res.skipped} skipped. `:'. ')+res.notes.join(' ');
+  };
+  rd.readAsText(f);
+};
+$('tpl').onclick=()=>{downloadCSV('transactions-template.csv',[['Date','Type','Category','Description','Amount','Direction','Links'],
+  ['2026-11-01','asset','Bank','Opening bank balance','25000000','increase',''],['2026-11-01','capital','Owner capital','Opening capital','25000000','increase',''],
+  ['2026-11-05','income','Salary','Invoice paid in cash','10000000','','asset|in|Bank|10000000'],
+  ['2026-11-06','expense','Rent','Part paid, part payable','2000000','','asset|out|Bank|1200000;liability|in|Accounts payable|800000'],
+  ['2026-11-20','liability','Accounts payable','Paid the supplier','800000','decrease','asset|out|Bank|800000']])};
+$('exp').onclick=()=>{
+  const lk=t=>(t.links||[]).map(l=>[l.t,l.dir,String(l.cat).replace(/[|;]/g,' '),l.amt].concat(l.acc?[l.acc]:[]).join('|')).join(';');
+  downloadCSV('transactions.csv',[['Date','Type','Category','Description','Amount','Direction','Links']].concat(tx.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(t=>[t.date,t.type,t.category,t.desc,t.amount,BS_TYPES.indexOf(t.type)>-1?(t.dir==='out'?'decrease':'increase'):'',lk(t)])));
+};
+/*SCAN-JS-START*/
+let TESS_URL='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js',tessLoading=null;
+function loadTess(){
+  if(window.Tesseract)return Promise.resolve();
+  if(tessLoading)return tessLoading;
+  tessLoading=new Promise((ok,bad)=>{const sc=document.createElement('script');sc.src=TESS_URL;sc.onload=ok;sc.onerror=()=>{tessLoading=null;bad(new Error('load'))};document.head.appendChild(sc)});
+  return tessLoading;
+}
+function downscale(file){
+  return new Promise(ok=>{
+    const url=URL.createObjectURL(file),img=new Image();
+    img.onload=()=>{const max=1800,r=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');
+      c.width=Math.round(img.width*r);c.height=Math.round(img.height*r);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);
+      c.toBlob(b=>{ok({blob:b||file,url:url})},'image/jpeg',0.9)};
+    img.onerror=()=>{ok({blob:file,url:url})};img.src=url});
+}
+function scanAmount(v){const n=normAmount(v);return isNaN(n)?NaN:Math.abs(n)}
+function parseReceipt(text){
+  const lines=text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean),out={date:'',amount:0,merchant:'',type:'expense'};
+  // date
+  const dre=[/\b(\d{4}[-\/.]\d{1,2}[-\/.]\d{1,2})\b/,/\b(\d{1,2}[-\/.]\d{1,2}[-\/.]\d{4})\b/,/\b(\d{1,2}[-\/.]\d{1,2}[-\/.]\d{2})\b/];
+  for(let i=0;i<lines.length&&!out.date;i++){for(let k=0;k<dre.length;k++){const m=lines[i].match(dre[k]);if(m){let d=m[1];
+    if(k===2){const p=d.split(/[-\/.]/);d=p[0]+'/'+p[1]+'/20'+p[2]}const nd=normDate(d);if(validDate(nd)){out.date=nd;break}}}}
+  if(!out.date){const MN={jan:1,feb:2,mar:3,apr:4,may:5,mei:5,jun:6,jul:7,aug:8,agu:8,agt:8,sep:9,oct:10,okt:10,nov:11,dec:12,des:12};
+    for(let j=0;j<lines.length&&!out.date;j++){const mm=lines[j].match(/\b(\d{1,2})\s*([A-Za-z]{3})[a-z]*\.?,?\s*(\d{4})\b/);
+      if(mm&&MN[mm[2].toLowerCase()]){const nd2=mm[3]+'-'+('0'+MN[mm[2].toLowerCase()]).slice(-2)+'-'+('0'+mm[1]).slice(-2);if(validDate(nd2))out.date=nd2}}}
+  // amount: prefer a line with a total keyword, else the largest plausible number
+  const numRe=/(?:rp\.?|idr|usd|eur|gbp|sgd|aud|jpy|[$\u20ac\u00a3\u00a5])?\s*\(?\d[\d.,\s]*\d\)?|\d/gi;
+  function nums(l){const r=[],mt=l.match(/\d[\d.,]*\d|\d/g)||[];mt.forEach(x=>{const n=scanAmount(x);if(!isNaN(n)&&n>0&&!/^\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4}$/.test(x))r.push(n)});return r}
+  const key=/(grand\s*total|total\s*(?:bayar|belanja|tagihan|due|amount|payment|pembayaran)?|amount\s*due|balance\s*due|jumlah|tagihan|subtotal|bayar)/i,bad=/(change|kembali|tax|ppn|pajak|vat|discount|diskon|tip|cash|tunai|tendered)/i;
+  let best=0;
+  for(let a=lines.length-1;a>=0;a--){const L=lines[a];
+    if(key.test(L)&&!/sub\s*total/i.test(L)&&!bad.test(L)){let ns=nums(L);if(!ns.length&&lines[a+1])ns=nums(lines[a+1]);if(ns.length){best=Math.max.apply(null,ns);break}}}
+  if(!best){for(let b=lines.length-1;b>=0;b--){if(key.test(lines[b])&&!bad.test(lines[b])){const n2=nums(lines[b]);if(n2.length){best=Math.max.apply(null,n2);break}}}}
+  if(!best){const all=[];lines.forEach(l=>{if(!bad.test(l))nums(l).forEach(n=>{if(n<1e12)all.push(n)})});if(all.length)best=Math.max.apply(null,all)}
+  out.amount=best;
+  // merchant: first line that has letters and isn't mostly numbers/keywords
+  for(let q=0;q<Math.min(lines.length,8);q++){const t=lines[q];if(/[A-Za-z]{3,}/.test(t)&&!/(receipt|invoice|faktur|struk|tel|phone|www|http|date|tanggal|no\.|#)/i.test(t)&&t.replace(/[^A-Za-z]/g,'').length>=t.replace(/\s/g,'').length*0.5){out.merchant=t.replace(/[^\w\s&'.\-]/g,'').slice(0,60).trim();break}}
+  if(/(salary|gaji|refund|deposit|income|pemasukan)/i.test(text)&&!/(receipt|invoice|struk|total)/i.test(text))out.type='income';
+  return out;
+}
+function guessCategory(t){
+  const r=[['Food',/(restaurant|cafe|coffee|kopi|resto|warung|bakery|food|makan|pizza|burger|mart|market|grocery|supermarket|indomaret|alfamart)/i],
+    ['Transport',/(fuel|gas|bensin|pertamina|shell|taxi|grab|gojek|uber|parking|parkir|toll|tol)/i],
+    ['Utilities',/(electric|listrik|pln|water|pdam|internet|wifi|telkom|phone|pulsa|gas bill)/i],
+    ['Healthcare',/(pharmacy|apotek|clinic|klinik|hospital|rumah sakit|dental|doctor)/i],
+    ['Housing',/(rent|sewa|kos|apartment|mortgage|cicilan)/i],
+    ['Insurance',/(insurance|asuransi)/i],['Education',/(school|sekolah|tuition|course|kursus|book|buku)/i],
+    ['Entertainment',/(cinema|movie|bioskop|netflix|spotify|game|concert)/i]];
+  for(let i=0;i<r.length;i++)if(r[i][1].test(t))return r[i][0];return '';
+}
+function closeScan(){$('scanbox').hidden=true;$('scanraw').hidden=true;$('scanhint').hidden=true;$('scanbar').style.width='0'}
+function toggleScanMenu(show){const m=$('scanmenu');m.hidden=!show;$('scanbtn').setAttribute('aria-expanded',show?'true':'false')}
+$('scanbtn').onclick=()=>{toggleScanMenu($('scanmenu').hidden)};
+$('scantake').onclick=()=>{toggleScanMenu(false);$('scancam').value='';$('scancam').click()};
+$('scanpick').onclick=()=>{toggleScanMenu(false);$('scanfile').value='';$('scanfile').click()};
+$('scanclose').onclick=closeScan;
+function onScanPicked(){
+  const f=this.files&&this.files[0];if(!f)return;
+  const box=$('scanbox'),st=$('scanstat'),bar=$('scanbar');
+  box.hidden=false;$('scanraw').hidden=true;$('scanhint').hidden=true;bar.style.width='4%';st.textContent='Preparing image...';
+  downscale(f).then(r=>{
+    $('scanimg').src=r.url;st.textContent='Loading the reader (first time needs internet, about 10 MB)...';
+    return loadTess().then(()=>r)
+  }).then(r=>{
+    st.textContent='Reading receipt...';
+    return Tesseract.recognize(r.blob,'eng+ind',{logger:m=>{if(m.status==='recognizing text'){bar.style.width=Math.round(10+m.progress*88)+'%';st.textContent=`Reading receipt... ${Math.round(m.progress*100)}%`}else if(m.progress!==undefined&&m.status){st.textContent='Preparing reader: '+m.status.replace(/_/g,' ')}}})
+  }).then(res=>{
+    const text=(res&&res.data&&res.data.text)||'';bar.style.width='100%';
+    $('scantext').textContent=text||'(nothing recognised)';$('scanraw').hidden=false;
+    const p=parseReceipt(text);
+    if(!text.trim()||(!p.amount&&!p.date)){st.textContent='Could not read this receipt. Try a clearer, flat, well-lit photo, or enter it manually.';return}
+    if(p.date)$('date').value=p.date;
+    if(p.amount){$('amount').value=numFmt(p.amount);updAmtFmt()}
+    $('desc').value=p.merchant||'';
+    const c=guessCategory(text);fillCat();if(c){let cl=catList('expense');if(cl.indexOf(c)<0&&curType()==='expense')cl=[];if(catList(curType()).indexOf(c)>-1)$('cat').value=c}
+    document.getElementById(p.type==='income'?'t-inc':'t-exp').checked=true;links=defLinks();updateTypeUI();
+    const miss=[];if(!p.date)miss.push('date');if(!p.amount)miss.push('amount');
+    st.textContent=miss.length?(`Read partly. Please enter the ${miss.join(' and ')} yourself.`):'Receipt read. Please review the details.';
+    $('scanhint').hidden=false;
+    try{$('amount').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}
+  }).catch(e=>{
+    st.textContent=(e&&e.message==='load')?'The reader could not be downloaded. Check your internet connection and try again.':'Scanning failed. Try another photo or enter the transaction manually.';
+    bar.style.width='0';
+  });
+}
+$('scanfile').onchange=onScanPicked;
+$('scancam').onchange=onScanPicked;
+/*SCAN-JS-END*/
+/*BAL-JS-START*/
+let BALK='fin_ledger_bal_v1',ACCK='fin_ledger_accts_v2',ACC_TYPES=[['bank','Bank'],['cash','Cash'],['card','Card'],['ewallet','E-wallet']],accts=[],balUpdated='',accDraft=[];
+const ICO={bank:'\uD83C\uDFE6',cash:'\uD83D\uDCB5',card:'\uD83D\uDCB3',ewallet:'\uD83D\uDCF1'};
+function tLabel(k){for(let i=0;i<ACC_TYPES.length;i++)if(ACC_TYPES[i][0]===k)return ACC_TYPES[i][1];return 'Account'}
+const FIXED=['cash','bank'];
+function newId(){return 'a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function loadBal(){
+  let raw=[];
+  try{const v2=JSON.parse(localStorage.getItem(ACCK));
+    if(v2&&Array.isArray(v2.items)){raw=v2.items.filter(a=>a&&ICO[a.type]).map(a=>{return{id:String(a.id||newId()),type:a.type,name:String(a.name||''),amount:parseFloat(a.amount)||0}});balUpdated=v2.updated||''}
+    else throw 0}catch(e){
+    raw=[];try{const o=JSON.parse(localStorage.getItem(BALK));
+      if(o&&typeof o==='object'){ACC_TYPES.forEach(t=>{const v=parseFloat(o[t[0]])||0;if(v!==0)raw.push({id:newId(),type:t[0],name:'',amount:v})});balUpdated=o.updated||''}}catch(x){}}
+  accts=normAccts(raw,raw.length===0)}
+function normAccts(raw,seedBank){let out=[],cash=null,remap={};
+  raw.forEach((a,i)=>{
+    if(a.type==='cash'){if(!cash){cash={id:'cash',type:'cash',name:'',amount:0};out.push(cash)}cash.amount+=a.amount;remap[a.id]='cash'}
+    else out.push({id:a.id,type:a.type,name:a.name||'',amount:a.amount})});
+  if(!cash){cash={id:'cash',type:'cash',name:'',amount:0};out.unshift(cash)}
+  if(seedBank&&!out.some(x=>x.type==='bank'))out.push({id:newId(),type:'bank',name:'',amount:0});
+  const ord={cash:0,bank:1,ewallet:2,card:3};
+  out=out.map((a,i)=>{return{a:a,i:i}}).sort((x,y)=>(ord[x.a.type]-ord[y.a.type])||(x.i-y.i)).map(w=>w.a);
+  out.forEach(a=>{a.amount=Math.round(a.amount*100)/100});
+  accRemap=remap;return out}
+let accRemap={};
+function saveBal(){try{localStorage.setItem(ACCK,JSON.stringify({items:accts,updated:balUpdated}))}catch(e){$('balupd').textContent='Browser storage is unavailable; balances will not persist.'}}
+function accLabel(a,list){if(a.type==='cash')return 'Cash';const same=list.filter(x=>x.type===a.type);
+  if(a.name.trim())return a.name.trim();return same.length>1?tLabel(a.type)+' '+(same.indexOf(a)+1):tLabel(a.type)}
+function accEffect(id){let v=0;tx.forEach(t=>{(t.links||[]).forEach(l=>{const key=l.acc&&accRemap[l.acc]?accRemap[l.acc]:l.acc;if(l.t==='asset'&&key===id)v+=(l.dir==='out'?-l.amt:l.amt)})});return Math.round(v*100)/100}
+function accNow(a){return Math.round((a.amount+accEffect(a.id))*100)/100}
+function renderBal(){
+  let total=0;accts.forEach(a=>{total+=accNow(a)});
+  const c=$('balgrid'),sl=c.scrollLeft||0,n=accts.length+1;
+  let h=`<div class="bcard total" role="group" aria-roledescription="slide" aria-label="1 of ${n}"><div class="bhead"><span class="ico" aria-hidden="true">💰</span><span class="bl">Total balance</span></div><b class="bv">${fmt(total)}</b><div class="bs2">Across ${accts.length} account${accts.length===1?'':'s'}</div></div>`;
+  accts.forEach((a,i)=>{const now=accNow(a),pct=(total>0&&now>0)?Math.round(now/total*100):0,nm=accLabel(a,accts);
+    h+='<div class="bcard '+a.type+'" role="group" aria-roledescription="slide" aria-label="'+(i+2)+' of '+n+'"><div class="bhead"><span class="ico" aria-hidden="true">'+ICO[a.type]+'</span><span class="bl">'+esc(nm)+'</span></div><b class="bv">'+fmt(now)+'</b><div class="bs2">'+(a.name.trim()&&a.type!=='cash'&&a.type!=='bank'?tLabel(a.type)+' \u00b7 ':'')+pct+'% of total balance</div></div>'});
+  c.innerHTML=h;c.scrollLeft=sl;
+  let d='';for(let i=0;i<n;i++)d+='<button class="dot" type="button" data-i="'+i+'" aria-label="Show card '+(i+1)+' of '+n+'" aria-current="'+(i===0?'true':'false')+'"></button>';
+  $('baldots').innerHTML=d;balDots();
+  $('balupd').textContent=balUpdated?(`Last updated ${new Date(balUpdated+'T00:00:00').toLocaleDateString(dloc(),{day:'numeric',month:'short',year:'numeric'})}. Opening balances are entered by you. New transactions that pick a card update its balance.`):(accts.length?'':'Tap Manage cards to enter your Cash balance and add your Banks, E-wallets or Cards.');
+  $('balbtn').textContent=$('baledit').hidden?'Manage cards':'Close';
+}
+function balIdx(){const c=$('balgrid'),k=c.children;if(!k||!k.length)return 0;
+  if(c.scrollLeft+c.clientWidth>=c.scrollWidth-2&&c.scrollLeft>0)return k.length-1;
+  let base=k[0].offsetLeft,best=0,bd=1e9;
+  for(let i=0;i<k.length;i++){const dd=Math.abs(k[i].offsetLeft-base-c.scrollLeft);if(dd<bd){bd=dd;best=i}}return best}
+function balDots(){const d=$('baldots').children,a=balIdx();if(!d)return;for(let i=0;i<d.length;i++)d[i].setAttribute('aria-current',i===a?'true':'false')}
+function balGo(i){const c=$('balgrid'),k=c.children;if(!k||!k.length)return;i=Math.max(0,Math.min(k.length-1,i));
+  const left=k[i].offsetLeft-k[0].offsetLeft,rm=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(c.scrollTo)c.scrollTo({left:left,behavior:rm?'auto':'smooth'});else c.scrollLeft=left}
+let balTick=false;
+$('balgrid').onscroll=()=>{if(balTick)return;balTick=true;(typeof requestAnimationFrame==='function'?requestAnimationFrame:setTimeout)(()=>{balTick=false;balDots()})};
+$('balprev').onclick=()=>{balGo(balIdx()-1)};
+$('balnext').onclick=()=>{balGo(balIdx()+1)};
+$('baldots').onclick=e=>{const i=e.target.getAttribute&&e.target.getAttribute('data-i');if(i!==null&&i!==undefined)balGo(+i)};
+$('balgrid').onkeydown=e=>{if(e.key==='ArrowRight'){e.preventDefault();balGo(balIdx()+1)}else if(e.key==='ArrowLeft'){e.preventDefault();balGo(balIdx()-1)}};
+
+/* ---- manage cards: add, rename, edit amount, remove ---- */
+function drawAcc(){
+  const box=$('acclist'),ph={bank:'BCA',ewallet:'GoPay',card:'Visa'};
+  box.innerHTML=accDraft.map((a,i)=>{const fixed=a.type==='cash';
+    return `<div class="acc-row" data-i="${i}"><span class="ico" aria-hidden="true">${ICO[a.type]}</span>${fixed?'<div class="acc-fixed"><b>Cash</b><span class="sub">Cash on hand</span></div>':
+      `<input type="text" data-i="${i}" data-f="name" value="${esc(a.name)}" maxlength="30" placeholder="${tLabel(a.type)} name, e.g. ${ph[a.type]||''}" aria-label="${tLabel(a.type)} name" autocomplete="off">`}<div class="money"><span class="sym">${esc(SYM[cur]||cur)}</span><input type="text" data-i="${i}" data-f="amount" inputmode="decimal" value="${a.amount?numFmt(a.amount):''}" placeholder="0" aria-label="${accLabel(a,accDraft)} balance" autocomplete="off"></div>${fixed?'<span></span>':`<button type="button" class="rm" data-rm="${i}" aria-label="Remove ${esc(accLabel(a,accDraft))}">×</button>`}${a.eff?`<div class="sub u-span">Includes ${a.eff>0?'+':''}${fmt(a.eff)} from linked transactions.</div>`:''}</div>`}).join('');
+}
+function openBalEdit(on){
+  const box=$('baledit');box.hidden=!on;
+  if(on){accDraft=accts.map(a=>{const e=accEffect(a.id);return{id:a.id,type:a.type,name:a.name,amount:Math.round((a.amount+e)*100)/100,eff:e}});drawAcc()}
+  renderBal();
+}
+$('acclist').oninput=e=>{const el=e.target,i=el.getAttribute('data-i'),f=el.getAttribute('data-f');
+  if(i===null||i===undefined||!f||!accDraft[+i])return;
+  if(f==='amount'){maskMoney(el);accDraft[+i].amount=parseMoney(el.value)}else accDraft[+i].name=el.value};
+$('acclist').onclick=e=>{const r=e.target.getAttribute&&e.target.getAttribute('data-rm');
+  if(r!==null&&r!==undefined){const a=accDraft[+r];if(!a||a.type==='cash')return;
+    if((a.amount!==0||a.name.trim())&&!ask(`Remove ${accLabel(a,accDraft)}?`))return;
+    accDraft.splice(+r,1);drawAcc()}};
+$('accaddbtn').onclick=()=>{let t=$('accnew').value;if(t!=='bank'&&t!=='card'&&t!=='ewallet')t='bank';accDraft.push({id:newId(),type:t,name:'',amount:0});drawAcc();
+  try{const inp=$('acclist').querySelector('.acc-row:last-child input');if(inp)inp.focus()}catch(x){}};
+$('balbtn').onclick=()=>{openBalEdit($('baledit').hidden)};
+$('balcancel').onclick=()=>{openBalEdit(false)};
+$('balsave').onclick=()=>{
+  accts=normAccts(accDraft.map(a=>{return{id:a.id,type:a.type,name:(a.name||'').trim(),amount:Math.round((a.amount-(a.eff||0))*100)/100}}));
+  balUpdated=today();saveBal();openBalEdit(false);render()};
+/*BAL-JS-END*/
+/*I18N-START*/
+let LANGK='fin_ledger_lang_v1',LANG='en',LANGS=[['en','English'],['id','Bahasa Indonesia']];
+const FLAGS={en:'<svg class="flag" viewBox="0 0 60 40" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0L60 40M60 0L0 40" stroke="#C8102E" stroke-width="3"/><path d="M30 0V40M0 20H60" stroke="#fff" stroke-width="12"/><path d="M30 0V40M0 20H60" stroke="#C8102E" stroke-width="7"/></svg>',
+ id:'<svg class="flag" viewBox="0 0 3 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect width="3" height="1" fill="#CE1126"/><rect y="1" width="3" height="1" fill="#fff"/></svg>'};
+const D={"Headers not found. Use the columns: Date, Type, Category, Description, Amount. Tap Download template for an example.": "Header tidak ditemukan. Gunakan kolom: Date, Type, Category, Description, Amount. Ketuk Unduh templat untuk contoh.", "Pay with an Asset decrease, or buy on credit with a Liability increase. Choose Opening balance to pair it with Opening balance equity automatically.": "Bayar dengan pengurangan Aset, atau beli secara kredit dengan penambahan Liabilitas. Pilih Saldo awal untuk dipasangkan otomatis dengan Ekuitas saldo awal.", "Increases and decreases in assets, liabilities and capital. Capital also includes net profit. These do not change income, expenses or net cash flow.": "Penambahan dan pengurangan aset, liabilitas, dan modal. Modal juga memuat laba bersih. Ini tidak mengubah pemasukan, pengeluaran, atau arus kas bersih.", "Capital can raise or reduce Assets and Liabilities, for example cash contributed or a debt settled. Choose Opening balance to pair it with Opening balance equity automatically.": "Modal dapat menambah atau mengurangi Aset dan Liabilitas, misalnya kas disetor atau utang dilunasi. Pilih Saldo awal untuk dipasangkan otomatis dengan Ekuitas saldo awal.", "Income earned: Asset increase if received (cash, bank or receivable), or Liability decrease if it clears an advance. Profit already flows into Capital through retained earnings.": "Pemasukan diperoleh: Aset bertambah jika diterima (kas, bank, atau piutang), atau Liabilitas berkurang jika melunasi uang muka. Laba sudah mengalir ke Modal lewat laba ditahan.", "Expense incurred: Asset decrease if paid now, or Liability increase if still payable. Use two effects for part-paid. The loss already flows into Capital through retained earnings.": "Pengeluaran terjadi: Aset berkurang jika dibayar sekarang, atau Liabilitas bertambah jika masih terutang. Gunakan dua efek untuk pembayaran sebagian. Rugi sudah mengalir ke Modal lewat laba ditahan.", "Pick the matching effect, such as Asset increase when funds are received or Asset decrease when you repay. Choose Opening balance to pair it with Opening balance equity automatically.": "Pilih efek yang sesuai, misalnya Aset bertambah saat dana diterima atau Aset berkurang saat Anda melunasi. Pilih Saldo awal untuk dipasangkan otomatis dengan Ekuitas saldo awal.", "CSV Type column accepts: income, expense, asset, liability, capital. For the last three, an optional Direction column takes increase or decrease, or use a negative amount for a decrease.": "Kolom Type pada CSV menerima: income, expense, asset, liability, capital. Untuk tiga yang terakhir, kolom Direction opsional berisi increase atau decrease, atau gunakan jumlah negatif untuk pengurangan.", "Cash is one fixed account. Add as many Banks, E-wallets or Cards as you need, each with its own name, for example BCA, Mandiri, GoPay or OVO. The amount shown is the current balance. When a transaction picks one of these accounts in its Balance sheet effect, that card goes up or down. Transactions never create new accounts.": "Kas adalah satu akun tetap. Tambahkan Bank, E-wallet, atau Kartu sebanyak yang Anda perlukan, masing-masing dengan nama sendiri, misalnya BCA, Mandiri, GoPay, atau OVO. Jumlah yang tampil adalah saldo saat ini. Saat transaksi memilih salah satu akun ini di Efek neraca, kartu itu naik atau turun. Transaksi tidak pernah membuat akun baru.", "Cumulative position up to the end of the selected month, with increases and decreases netted. Total capital includes retained earnings (cumulative net profit) and equals the closing equity below. Assets, liabilities and capital do not affect profit and loss or cash flow. Your carousel card balances are included as assets: each opening amount is paired with Opening balance equity, and transactions that pick a card move both the card and the balance sheet.": "Posisi kumulatif sampai akhir bulan terpilih, dengan penambahan dan pengurangan dinetralkan. Total modal mencakup laba ditahan (laba bersih kumulatif) dan sama dengan ekuitas akhir di bawah. Aset, liabilitas, dan modal tidak memengaruhi laba rugi atau arus kas. Saldo kartu carousel Anda ikut dihitung sebagai aset: setiap saldo awal dipasangkan dengan Ekuitas saldo awal, dan transaksi yang memilih kartu menggerakkan kartu sekaligus neraca.", "My Financial Report": "Laporan Keuangan Saya", "Personal cash flow reporting. Data stays in this browser.": "Laporan arus kas pribadi. Data tersimpan di browser ini.", "Reporting period": "Periode laporan", "Currency": "Mata uang", "Language": "Bahasa", "Switch between light and dark mode": "Beralih antara mode terang dan gelap", "Switch to light mode": "Beralih ke mode terang", "Switch to dark mode": "Beralih ke mode gelap", "Main menu": "Menu utama", "Home": "Beranda", "Reports": "Laporan", "Account balances": "Saldo akun", "Total balance": "Total saldo", "Manage cards": "Kelola kartu", "Previous card": "Kartu sebelumnya", "Next card": "Kartu berikutnya", "Balance cards. Swipe or use the arrow keys to see more.": "Kartu saldo. Geser atau gunakan tombol panah untuk melihat lainnya.", "Close": "Tutup", "Cancel": "Batal", "Remove": "Hapus", "Save balances": "Simpan saldo", "+ Add account": "+ Tambah akun", "Add account": "Tambah akun", "Account type": "Jenis akun", "Cash on hand": "Uang tunai", "Cash": "Kas", "Bank": "Bank", "Card": "Kartu", "E-wallet": "E-wallet", "Tap Manage cards to enter your Cash balance and add your Banks, E-wallets or Cards.": "Ketuk Kelola kartu untuk mengisi saldo Kas dan menambahkan Bank, E-wallet, atau Kartu Anda.", "Browser storage is unavailable; balances will not persist.": "Penyimpanan browser tidak tersedia; saldo tidak akan tersimpan.", "Record a transaction": "Catat transaksi", "Scan receipt": "Pindai struk", "Take photo": "Ambil foto", "Choose from gallery": "Pilih dari galeri", "Close scan": "Tutup pindai", "Show recognised text": "Tampilkan teks terbaca", "Receipt preview": "Pratinjau struk", "Preparing image...": "Menyiapkan gambar...", "Reading receipt...": "Membaca struk...", "Check the fields below, correct anything that is wrong, then tap Add transaction.": "Periksa kolom di bawah, perbaiki yang salah, lalu ketuk Tambah transaksi.", "Loading the reader (first time needs internet, about 10 MB)...": "Memuat pembaca (pertama kali perlu internet, sekitar 10 MB)...", "Receipt read. Please review the details.": "Struk terbaca. Mohon periksa detailnya.", "Could not read this receipt. Try a clearer, flat, well-lit photo, or enter it manually.": "Struk tidak terbaca. Coba foto yang lebih jelas, rata, dan terang, atau isi secara manual.", "Scanning failed. Try another photo or enter the transaction manually.": "Pemindaian gagal. Coba foto lain atau isi transaksi secara manual.", "The reader could not be downloaded. Check your internet connection and try again.": "Pembaca tidak dapat diunduh. Periksa koneksi internet lalu coba lagi.", "(nothing recognised)": "(tidak ada teks terbaca)", "Date": "Tanggal", "Amount": "Jumlah", "Type": "Tipe", "Transaction type": "Tipe transaksi", "Expense": "Pengeluaran", "Income": "Pemasukan", "Asset": "Aset", "Liability": "Liabilitas", "Capital": "Modal", "Change": "Perubahan", "Increase": "Penambahan", "Decrease": "Pengurangan", "Opening balance": "Saldo awal", "Closing balance": "Saldo akhir", "Increase or decrease": "Penambahan atau pengurangan", "Reduces profit. Counted in expenses and cash flow.": "Mengurangi laba. Dihitung dalam pengeluaran dan arus kas.", "Increases profit. Counted in income and cash flow.": "Menambah laba. Dihitung dalam pemasukan dan arus kas.", "Increase: you acquire or add an asset, such as buying equipment.": "Penambahan: Anda memperoleh atau menambah aset, misalnya membeli peralatan.", "Decrease: you sell, write off or reduce an asset.": "Pengurangan: Anda menjual, menghapus, atau mengurangi aset.", "Increase: you take on more debt, such as a new loan.": "Penambahan: Anda menambah utang, misalnya pinjaman baru.", "Decrease: you repay or settle a debt.": "Pengurangan: Anda membayar atau melunasi utang.", "Increase: capital contributed or earnings retained.": "Penambahan: modal disetor atau laba ditahan.", "Decrease: an owner withdrawal or capital reduction.": "Pengurangan: penarikan pemilik atau pengurangan modal.", "Category": "Kategori", "+ New category": "+ Kategori baru", "New category name": "Nama kategori baru", "Add": "Tambah", "Description": "Deskripsi", "Optional note": "Catatan (opsional)", "Balance sheet effect": "Efek neraca", "automatic": "otomatis", "Effect on": "Berdampak pada", "Direction": "Arah", "Account": "Akun", "Opening balance (auto-balance)": "Saldo awal (seimbang otomatis)", "+ Add another effect": "+ Tambah efek lain", "Amount of this effect": "Jumlah efek ini", "Amount of first effect": "Jumlah efek pertama", "Remaining amount": "Sisa jumlah", "Remove second effect": "Hapus efek kedua", "\u00d7 Remove": "\u00d7 Hapus", "Add transaction": "Tambah transaksi", "Transaction added.": "Transaksi ditambahkan.", "Choose a date and a category, and enter an amount greater than zero.": "Pilih tanggal dan kategori, lalu isi jumlah yang lebih dari nol.", "With two effects, the first amount must be above zero and below the transaction amount.": "Dengan dua efek, jumlah pertama harus lebih dari nol dan kurang dari jumlah transaksi.", "Enter a category name.": "Isi nama kategori.", "Monthly summary": "Ringkasan bulanan", "Total income": "Total pemasukan", "Total expenses": "Total pengeluaran", "Net cash flow": "Arus kas bersih", "Balance sheet movement this month": "Pergerakan neraca bulan ini", "Assets": "Aset", "Liabilities": "Liabilitas", "Closing balance": "Saldo akhir", "Net profit / (loss)": "Laba / (rugi) bersih", "Record an Asset, Liability or Capital entry to see its monthly movement here.": "Catat entri Aset, Liabilitas, atau Modal untuk melihat pergerakan bulanannya di sini.", "Monthly expense budget": "Anggaran pengeluaran bulanan", "Not set": "Belum diatur", "Add budget": "Tambah anggaran", "Edit budget": "Ubah anggaran", "Budget amount": "Jumlah anggaran", "Save budget": "Simpan anggaran", "Budget": "Anggaran", "Spent": "Terpakai", "Remaining": "Sisa", "Over by": "Lebih", "Budget used": "Anggaran terpakai", "Tap Add budget to set a monthly spending limit.": "Ketuk Tambah anggaran untuk menetapkan batas pengeluaran bulanan.", "Enter a budget amount greater than zero.": "Isi jumlah anggaran yang lebih dari nol.", "Profit and loss by category": "Laba rugi per kategori", "Revenue": "Pendapatan", "Total revenue": "Total pendapatan", "Operating expenses": "Beban operasional", "No data for this period.": "Tidak ada data untuk periode ini.", "Statement of changes in equity": "Laporan perubahan ekuitas", "Net profit / (loss) is linked to the profit and loss above for the selected month.": "Laba / (rugi) bersih terhubung ke laba rugi di atas untuk bulan terpilih.", "Opening equity (start of period)": "Ekuitas awal (awal periode)", "Owner capital": "Modal pemilik", "Retained earnings": "Laba ditahan", "NFC": "NFC", "NFC card test": "Uji kartu NFC", "Scan NFC": "Scan NFC", "Stop": "Berhenti", "Last card read": "Pembacaan kartu terakhir", "Hold the back of your phone against an e-money card, then tap Scan NFC. This test shows what the phone can read from the card. It does not change any of your records.": "Tempelkan bagian belakang ponsel ke kartu e-money, lalu ketuk Scan NFC. Uji ini menampilkan apa yang bisa dibaca ponsel dari kartu. Data catatan Anda tidak diubah.", "Serial number": "Nomor seri", "Records": "Jumlah rekaman", "Read at": "Dibaca pukul", "Result": "Hasil", "(not provided)": "(tidak tersedia)", "(empty)": "(kosong)", "Ready. Hold a card against the back of the phone.": "Siap. Tempelkan kartu ke bagian belakang ponsel.", "Card read.": "Kartu terbaca.", "Stopped.": "Berhenti.", "Card detected, but not readable.": "Kartu terdeteksi, tetapi tidak bisa dibaca.", "This tag carries NDEF data, shown above.": "Kartu ini membawa data NDEF, ditampilkan di atas.", "Only the serial number is available. E-money balances are stored in a protected area that Web NFC can not read.": "Hanya nomor seri yang tersedia. Saldo e-money disimpan di area terlindungi yang tidak bisa dibaca Web NFC.", "Most bank and transit e-money cards do not use the NDEF format, so a phone browser can not read their balance.": "Kebanyakan kartu e-money bank dan transportasi tidak memakai format NDEF, sehingga browser ponsel tidak bisa membaca saldonya.", "A tag was detected, but its data could not be read as NDEF.": "Kartu terdeteksi, tetapi datanya tidak bisa dibaca sebagai NDEF.", "This browser cannot use NFC. Use Chrome on an Android phone with NFC turned on. iPhone is not supported.": "Browser ini tidak bisa memakai NFC. Gunakan Chrome di ponsel Android dengan NFC menyala. iPhone tidak didukung.", "NFC needs a secure page (https). Open this page from an https address, not from a file on the phone.": "NFC butuh halaman aman (https). Buka halaman ini dari alamat https, bukan dari file di ponsel.", "Permission to use NFC was denied. Allow it in the browser prompt or in the site settings.": "Izin memakai NFC ditolak. Izinkan lewat pesan di browser atau di pengaturan situs.", "NFC is switched off or not available on this phone. Turn it on in the phone settings.": "NFC mati atau tidak tersedia di ponsel ini. Nyalakan di pengaturan ponsel.",  "Incoming (auto-detected)": "Penerimaan otomatis (terdeteksi)", "Period type": "Jenis periode", "Month": "Bulan", "Year": "Tahun", "Reporting year": "Tahun laporan", "Yearly budget": "Anggaran tahunan", "Income and expenses by month for the year": "Pemasukan dan pengeluaran per bulan untuk tahun ini", "Retained earnings (prior years)": "Laba ditahan (tahun-tahun sebelumnya)", "Current year profit": "Laba tahun berjalan", "Current year profit so far": "Laba tahun berjalan sampai periode ini", "Opening equity (closing balance of last year)": "Ekuitas awal (saldo akhir tahun lalu)", "Changes during the period": "Perubahan selama periode", "Capital contributions": "Setoran modal", "Capital withdrawals": "Penarikan modal", "from P&L": "dari L/R", "from P&amp;L": "dari L/R", "Closing equity (end of period)": "Ekuitas akhir (akhir periode)", "Income vs. expenses": "Pemasukan vs. pengeluaran", "Expenses": "Pengeluaran", "Monthly income and expenses bar chart": "Grafik batang pemasukan dan pengeluaran bulanan", "Balance sheet": "Neraca", "None recorded": "Belum ada catatan", "Total assets": "Total aset", "Total liabilities": "Total liabilitas", "Total capital": "Total modal", "Retained earnings (cumulative net profit)": "Laba ditahan (laba bersih kumulatif)", "Opening balance equity": "Ekuitas saldo awal", "No balance sheet entries yet. Choose Asset, Liability or Capital as the type when recording a transaction.": "Belum ada entri neraca. Pilih Aset, Liabilitas, atau Modal sebagai tipe saat mencatat transaksi.", "Transactions": "Transaksi", "Import CSV": "Impor CSV", "Download template": "Unduh templat", "Export CSV": "Ekspor CSV", "No transactions in this period. Add one using the form above.": "Tidak ada transaksi pada periode ini. Tambahkan lewat formulir di atas.", "Delete transaction": "Hapus transaksi", "Delete this transaction?": "Hapus transaksi ini?", "Remove the monthly budget?": "Hapus anggaran bulanan?", "The file is empty.": "File kosong.", "The file could not be read. Try again.": "File tidak dapat dibaca. Coba lagi.", "Excel files cannot be read directly. In Excel, choose Save As, then CSV, and import that file.": "File Excel tidak dapat dibaca langsung. Di Excel, pilih Save As, lalu CSV, dan impor file itu.", "Housing": "Perumahan", "Food": "Makanan", "Transport": "Transportasi", "Utilities": "Utilitas", "Healthcare": "Kesehatan", "Education": "Pendidikan", "Insurance": "Asuransi", "Entertainment": "Hiburan", "Taxes": "Pajak", "Salary": "Gaji", "Business income": "Pendapatan usaha", "Investments": "Investasi", "Receivables": "Piutang", "Inventory": "Persediaan", "Equipment": "Peralatan", "Property": "Properti", "Bank loan": "Pinjaman bank", "Credit card": "Kartu kredit", "Accounts payable": "Utang usaha", "Mortgage": "KPR", "Tax payable": "Utang pajak", "Additional paid-in capital": "Tambahan modal disetor", "Rent": "Sewa"};
+const WHY={'invalid date':'tanggal tidak valid','missing category':'kategori kosong','invalid amount':'jumlah tidak valid','type must be income, expense, asset, liability or capital':'tipe harus income, expense, asset, liability, atau capital'};
+function w(x){return D.hasOwnProperty(x)?D[x]:x}
+function trNotes(r){return r.replace(/Row (\d+) skipped: ([^.]+)\./g,(a,n,why)=>`Baris ${n} dilewati: ${WHY[why]||why}.`)}
+const PT=[
+ [/^Across (\d+) accounts?$/,m=>'Dari '+m[1]+' akun'],
+ [/^(.+?) \u00b7 (Opening balance equity|Cash|Bank|E-wallet|Card)( [\u2191\u2193])?$/,m=>`${m[1]} \u00b7 ${D[m[2]]||m[2]}${m[3]||''}`],
+ [/^(\d+)% of total balance$/,m=>m[1]+'% dari total saldo'],
+ [/^(.+?) \u00b7 (\d+)% of total balance$/,m=>w(m[1])+' \u00b7 '+m[2]+'% dari total saldo'],
+ [/^(\d+)% of budget used this period\.$/,m=>m[1]+'% anggaran terpakai pada periode ini.'],
+ [/^Over budget: (\d+)% of the limit is used\.$/,m=>`Melebihi anggaran: ${m[1]}% dari batas terpakai.`],
+ [/^Includes (.+) from linked transactions\.$/,m=>`Termasuk ${m[1]} dari transaksi terhubung.`],
+ [/^Last updated (.+?)\. Opening balances are entered by you\. New transactions that pick a card update its balance\.$/,m=>`Terakhir diperbarui ${m[1]}. Saldo awal Anda isi sendiri. Transaksi baru yang memilih kartu akan memperbarui saldonya.`],
+ [/^Show card (\d+) of (\d+)$/,m=>`Tampilkan kartu ${m[1]} dari ${m[2]}`],
+ [/^(\d+) of (\d+)$/,m=>m[1]+' dari '+m[2]],
+ [/^Remove (.+)\?$/,m=>'Hapus '+w(m[1])+'?'],
+ [/^Remove (.+)$/,m=>'Hapus '+w(m[1])],
+ [/^(Bank|Card|E-wallet) name$/,m=>'Nama '+w(m[1])],
+ [/^(Bank|Card|E-wallet) balance$/,m=>'Saldo '+w(m[1])],
+ [/^(Bank|Card|E-wallet) name, e\.g\. (.+)$/,m=>`Nama ${w(m[1])}, mis. ${m[2]}`],
+ [/^(Asset|Liability|Capital) ([\u2191\u2193])$/,m=>w(m[1])+' '+m[2]],
+ [/^(Asset|Liability|Capital) (increase|decrease)$/,m=>w(m[1])+(m[2]==='increase'?' bertambah':' berkurang')],
+ [/^(Asset|Liability|Capital) (increases|decreases) by (.+)$/,m=>w(m[1])+(m[2]==='increases'?' bertambah ':' berkurang ')+m[3]],
+ [/^Balanced: assets equal liabilities plus capital \((.+)\)\.$/,m=>`Seimbang: aset sama dengan liabilitas ditambah modal (${m[1]}).`],
+ [/^Not balanced: assets (.+) vs liabilities plus capital (.+)\. Difference (.+?) \((assets higher|liabilities and capital higher)\)\.$/,m=>`Tidak seimbang: aset ${m[1]} vs liabilitas ditambah modal ${m[2]}. Selisih ${m[3]} (${m[4]==='assets higher'?'aset lebih besar':'liabilitas dan modal lebih besar'}).`],
+ [/^Closing equity equals Total capital on the balance sheet \((.+)\)\.$/,m=>`Ekuitas akhir sama dengan Total modal di neraca (${m[1]}).`],
+ [/^Closing equity (.+) differs from Total capital on the balance sheet (.+)\.$/,m=>`Ekuitas akhir ${m[1]} berbeda dari Total modal di neraca ${m[2]}.`],
+ [/^Category added: (.+)\.$/,m=>`Kategori ditambahkan: ${m[1]}.`],
+ [/^(\d+) transactions? imported(?:, (\d+) skipped)?\.\s*(.*)$/,m=>m[1]+' transaksi diimpor'+(m[2]?', '+m[2]+' dilewati':'')+'.'+(m[3]?' '+trNotes(m[3]):'')],
+ [/^Row (\d+) skipped: (.+)\.$/,m=>`Baris ${m[1]} dilewati: ${WHY[m[2]]||m[2]}.`],
+ [/^Reading receipt\.\.\. (\d+)%$/,m=>`Membaca struk... ${m[1]}%`],
+ [/^Preparing reader: (.+)$/,m=>'Menyiapkan pembaca: '+m[1]],
+ [/^Read partly\. Please enter the (.+) yourself\.$/,m=>`Terbaca sebagian. Mohon isi ${m[1].replace('date','tanggal').replace('amount','jumlah').replace(' and ',' dan ')} sendiri.`]
+];
+function trStr(s){
+  if(LANG!=='id'||typeof s!=='string')return s;
+  const t=s.trim();if(!t)return s;
+  let r=D.hasOwnProperty(t)?D[t]:undefined;
+  if(r===undefined){for(let i=0;i<PT.length;i++){const m=t.match(PT[i][0]);if(m){r=PT[i][1](m);break}}}
+  if(r===undefined)return s;
+  const a=s.indexOf(t);return s.slice(0,a)+r+s.slice(a+t.length)}
+function ask(m){return confirm(trStr(m))}
+function dloc(){return LANG==='id'?'id-ID':undefined}
+let trNodes=new Map(),trAttrs=new Map(),TRA=['placeholder','aria-label','title','alt'],trObs=null;
+function trText(n){const c=n.nodeValue,r=trStr(c);if(r!==c){if(trNodes.size>4000)trNodes.forEach((o,k)=>{if(!k.isConnected)trNodes.delete(k)});if(!trNodes.has(n))trNodes.set(n,c);n.nodeValue=r}}
+function trEl(el){if(!el.hasAttribute)return;for(let i=0;i<TRA.length;i++){const a=TRA[i];if(el.hasAttribute(a)){const c=el.getAttribute(a),r=trStr(c);if(r!==c){const o=trAttrs.get(el)||{};o[a]=c;trAttrs.set(el,o);el.setAttribute(a,r)}}}}
+function trSubtree(root){
+  if(LANG!=='id'||!root)return;
+  if(root.nodeType===3){trText(root);return}
+  if(root.nodeType!==1&&root.nodeType!==9&&root.nodeType!==11)return;
+  if(root.nodeType===1){if(root.nodeName==='SCRIPT'||root.nodeName==='STYLE')return;trEl(root)}
+  const k=root.childNodes;if(!k)return;for(let i=0;i<k.length;i++)trSubtree(k[i])}
+function trRestore(){trNodes.forEach((o,n)=>{if(n.isConnected)n.nodeValue=o});trNodes.clear();
+  trAttrs.forEach((o,el)=>{if(el.isConnected)Object.keys(o).forEach(a=>{el.setAttribute(a,o[a])})});trAttrs.clear()}
+function startObs(){if(trObs||typeof MutationObserver!=='function')return;
+  trObs=new MutationObserver(ms=>{if(LANG!=='id')return;ms.forEach(m=>{
+    if(m.type==='attributes')trEl(m.target);else for(let i=0;i<m.addedNodes.length;i++)trSubtree(m.addedNodes[i])})});
+  trObs.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:TRA})}
+function langName(l){for(let i=0;i<LANGS.length;i++)if(LANGS[i][0]===l)return LANGS[i][1];return l}
+function buildLangMenu(){$('langmenu').innerHTML=LANGS.map(L=>`<button type="button" class="lopt" role="option" data-l="${L[0]}" aria-selected="${L[0]===LANG?'true':'false'}">${FLAGS[L[0]]}<span>${L[1]}</span></button>`).join('')}
+function langMenu(open){$('langmenu').hidden=!open;$('lang').setAttribute('aria-expanded',open?'true':'false')}
+function setLang(l,store){
+  if(!FLAGS[l])l='en';const was=LANG;LANG=l;
+  try{document.documentElement.lang=l}catch(e){}
+  $('lang').innerHTML=FLAGS[l];
+  const lab=(l==='id'?'Bahasa: ':'Language: ')+langName(l);$('lang').setAttribute('aria-label',lab);$('lang').setAttribute('title',lab);
+  $('langmenu').setAttribute('aria-label',l==='id'?'Bahasa':'Language');
+  buildLangMenu();
+  try{document.title=l==='id'?'Laporan Keuangan Saya':'My Financial Report'}catch(e){}
+  if(store){try{localStorage.setItem(LANGK,l)}catch(e){}}
+  if(l==='id')startObs();
+  if(was==='id'&&l!=='id')trRestore();
+  render();
+  if(l==='id'&&typeof document.body==='object')trSubtree(document.body)}
+function initLang(){let l='';try{l=localStorage.getItem(LANGK)||''}catch(e){}
+  if(!FLAGS[l])l=(typeof navigator!=='undefined'&&navigator.language&&/^(id|in)([-_]|$)/i.test(navigator.language))?'id':'en';
+  setLang(l,false)}
+$('lang').onclick=()=>{langMenu($('langmenu').hidden)};
+$('langmenu').onclick=function(e){let el=e.target;while(el&&el!==this&&!(el.getAttribute&&el.getAttribute('data-l')))el=el.parentNode;
+  const l=el&&el.getAttribute&&el.getAttribute('data-l');if(l){setLang(l,true);langMenu(false);try{$('lang').focus()}catch(x){}}};
+if(document.addEventListener){
+  document.addEventListener('click',e=>{const wr=$('langwrap');if(!$('langmenu').hidden&&wr&&wr.contains&&!wr.contains(e.target))langMenu(false)});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('langmenu').hidden){langMenu(false);try{$('lang').focus()}catch(x){}}})}
+/*I18N-END*/
+/*NAV-JS-START*/
+const PGK='fin_ledger_page_v1',PAGES=['home','report','nfc'];
+function showPage(name,store,focusTab){
+  if(PAGES.indexOf(name)<0)name='home';
+  PAGES.forEach(p=>{const on=p===name,pg=$('page-'+p),tb=$('tab-'+p);
+    pg.hidden=!on;tb.setAttribute('aria-selected',on?'true':'false');tb.setAttribute('tabindex',on?'0':'-1');if(on&&focusTab&&tb.focus)tb.focus()});
+  if(store){try{localStorage.setItem(PGK,name)}catch(e){}}
+  if(typeof window!=='undefined'&&window.scrollTo&&store){try{window.scrollTo(0,0)}catch(e){}}
+  if(name==='home'&&typeof balDots==='function')balDots();
+}
+$('tabbar').onclick=function(e){let el=e.target;while(el&&el!==this&&!(el.getAttribute&&el.getAttribute('data-page')))el=el.parentNode;
+  const pg=el&&el.getAttribute&&el.getAttribute('data-page');if(pg)showPage(pg,true)};
+$('tabbar').onkeydown=e=>{const i=PAGES.indexOf(document.querySelector('.tab[aria-selected="true"]')?document.querySelector('.tab[aria-selected="true"]').getAttribute('data-page'):'home');
+  if(e.key==='ArrowRight'){e.preventDefault();showPage(PAGES[(i+1)%PAGES.length],true,true)}
+  else if(e.key==='ArrowLeft'){e.preventDefault();showPage(PAGES[(i+PAGES.length-1)%PAGES.length],true,true)}};
+/*NAV-JS-END*/
+function setTheme(t,store){document.documentElement.setAttribute('data-theme',t);
+  if(store){try{localStorage.setItem('fin_ledger_theme_v1',t)}catch(e){}}
+  $('theme').textContent=t==='dark'?'\u2600\uFE0F':'\uD83C\uDF19';$('theme').setAttribute('aria-label',t==='dark'?'Switch to light mode':'Switch to dark mode');$('theme').title=t==='dark'?'Switch to light mode':'Switch to dark mode';
+  const mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=t==='dark'?'#131f24':'#ffffff'}
+$('theme').onclick=()=>{setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark',true)};
+setTheme(document.documentElement.getAttribute('data-theme')||'light',false);
+load();loadBal();loadCats();links=defLinks();let _pg='home';try{_pg=localStorage.getItem(PGK)||'home'}catch(e){}showPage(_pg,false);$('cur').value=cur;$('date').value=today();$('month').value=ymd(new Date());{let pm='month';try{pm=localStorage.getItem(PMK)||'month'}catch(e){}setPM(pm,false)}render();
+/* Called by the Android app for every income it detects: importIncome(id, sender, amountRupiah, timeMillis, sourceApp).
+   Returns true when a transaction was added, false when it was invalid or already imported. */
+const AUTO_CAT='Incoming (auto-detected)',EWALLETS=['dana','ovo','gopay','shopeepay','linkaja'];
+function normName(v){return String(v||'').toLowerCase().replace(/[^a-z0-9]/g,'')}
+function accountForSource(source){
+  const src=normName(source);if(!src)return null;
+  const named=accts.filter(a=>{const n=normName(accLabel(a,accts));return a.type!=='cash'&&n.length>=3&&(src.includes(n)||n.includes(src))});
+  if(named.length===1)return named[0];
+  if(named.length>1)return null;
+  const kind=EWALLETS.some(w=>src.includes(w))?'ewallet':'bank',same=accts.filter(a=>a.type===kind);
+  return same.length===1&&!same[0].name.trim()?same[0]:null}   // fallback only for the unnamed default account, never for one you named
+function importIncome(ext,sender,amount,time,source){
+  const amt=Math.round(Number(amount));
+  if(!(amt>0)||amt>=1e12)return false;
+  const key=String(ext==null?'':ext);
+  if(key&&tx.some(t=>t.ext===key))return false;
+  const t0=Number(time),d=new Date(t0>0?t0:Date.now()),date=ymd(d)+'-'+String(d.getDate()).padStart(2,'0');
+  let id=Date.now();while(tx.some(t=>t.id===id))id++;
+  const who=String(sender||'').trim().slice(0,60)||'Unknown',src=String(source||'').trim().slice(0,40);
+  const nt={id:id,date:date,category:addCategory('income',AUTO_CAT),desc:'Auto: '+who+(src?' ('+src+')':''),amount:amt,type:'income',ext:key,src:'notification'};
+  const acc=accountForSource(src),lk={t:'asset',dir:'in',cat:acc?accLabel(acc,accts):'Bank',amt:amt};if(acc)lk.acc=acc.id;
+  nt.links=[lk];balanceEntry(nt);tx.push(nt);save();
+  if(PM==='year')yearOptions($('year').value);
+  render();return true}
+/* NFC card test. Uses Web NFC (Chrome on Android, secure page, started by a tap). Read-only: it never writes to a card. */
+let nfcReader=null,nfcAbort=null;
+function nfcSay(msg){$('nfcstatus').textContent=msg}
+function nfcHex(buf){return Array.prototype.map.call(new Uint8Array(buf.buffer?buf.buffer:buf),b=>('0'+b.toString(16)).slice(-2)).join('').toUpperCase()}
+function nfcRows(list){$('nfcrows').innerHTML=list.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('');$('nfcres').hidden=false}
+function nfcDecode(rec){
+  try{
+    if(rec.recordType==='text'||rec.recordType==='url'||rec.recordType==='absolute-url'||rec.recordType==='mime'){
+      const td=new TextDecoder(rec.encoding||'utf-8');return td.decode(rec.data)}
+  }catch(e){}
+  return rec.data?'(binary, '+rec.data.byteLength+' bytes)':'(empty)'}
+function nfcStop(){if(nfcAbort){try{nfcAbort.abort()}catch(e){}}nfcAbort=null;nfcReader=null;$('nfcscan').hidden=false;$('nfcstop').hidden=true}
+async function nfcStart(){
+  if(!('NDEFReader' in window)){
+    nfcSay(window.isSecureContext===false?'NFC needs a secure page (https). Open this page from an https address, not from a file on the phone.':'This browser cannot use NFC. Use Chrome on an Android phone with NFC turned on. iPhone is not supported.');return}
+  try{
+    nfcReader=new NDEFReader();nfcAbort=new AbortController();
+    await nfcReader.scan({signal:nfcAbort.signal});
+    $('nfcscan').hidden=true;$('nfcstop').hidden=false;nfcSay('Ready. Hold a card against the back of the phone.');
+    nfcReader.onreadingerror=()=>{nfcRows([['Result','A tag was detected, but its data could not be read as NDEF.']]);$('nfcnote').textContent='Most bank and transit e-money cards do not use the NDEF format, so a phone browser can not read their balance.';nfcSay('Card detected, but not readable.')};
+    nfcReader.onreading=ev=>{
+      const rows=[['Serial number',ev.serialNumber||'(not provided)'],['Records',String((ev.message&&ev.message.records||[]).length)]];
+      (ev.message&&ev.message.records||[]).forEach((r,i)=>{rows.push(['Record '+(i+1)+' type',r.recordType]);rows.push(['Record '+(i+1)+' data',nfcDecode(r)])});
+      rows.push(['Read at',new Date().toLocaleTimeString()]);nfcRows(rows);
+      $('nfcnote').textContent=(ev.message&&ev.message.records&&ev.message.records.length)?'This tag carries NDEF data, shown above.':'Only the serial number is available. E-money balances are stored in a protected area that Web NFC can not read.';
+      nfcSay('Card read.')};
+  }catch(e){
+    nfcStop();
+    nfcSay(e&&e.name==='NotAllowedError'?'Permission to use NFC was denied. Allow it in the browser prompt or in the site settings.':e&&e.name==='NotSupportedError'?'NFC is switched off or not available on this phone. Turn it on in the phone settings.':'Could not start NFC: '+(e&&e.message?e.message:'unknown error'))}}
+$('nfcscan').onclick=nfcStart;$('nfcstop').onclick=()=>{nfcStop();nfcSay('Stopped.')};
+document.getElementById("f").addEventListener("submit",e=>{e.preventDefault()});
+initLang();
+</script>
+</body>
+</html>
