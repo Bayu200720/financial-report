@@ -12,3 +12,5 @@ android/local.properties
 *.jks
 .DS_Store
 Thumbs.db
+
+.vercel
